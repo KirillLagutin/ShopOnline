@@ -1,0 +1,37 @@
+﻿@page "/Catalog"
+
+@inject IShopClient Client
+
+<PageTitle>Catalog</PageTitle>
+
+<h3 class="mb-5">Product List</h3>
+
+@if (Products != null)
+{
+    @foreach (var product in Products!)
+    {
+        <div class="row mt-3">
+            <b>@product.Name</b>
+            <p>@product.Description</p>
+            <p>@product.Price</p>
+            <img src="@product.ImageUrl"/>
+        </div>
+        <hr class="mb-3"/>
+    }
+}
+else
+{
+    <p>Loading...</p>
+}
+
+
+@code
+{
+    private IReadOnlyList<Product>? Products { get; set; } = null!;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await Client.GetProducts();
+        StateHasChanged();
+    }
+}

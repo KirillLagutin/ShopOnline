@@ -12,18 +12,34 @@ var dbPath = builder.Configuration["DbPath"];
 
 // Add services to the container.
 
+// Connection to db
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseSqlite($"Data Source={dbPath}"));
 
+// Add CORS
+builder.Services.AddCors();
+
+// Registering repository
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
+
+// CORS
+app.UseCors(policy => policy
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => 
+        origin is "https://localhost:7051" 
+            or "http://localhost:5108")
+    .AllowCredentials()
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -44,7 +60,6 @@ app.MapGet("/get_products",
             ? Results.NotFound(new {message = "Товар не найден"}) 
             : Results.Ok(products);
     }
-    
 );
 
 // GET PRODUCT
