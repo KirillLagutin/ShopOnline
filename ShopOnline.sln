@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.BlazorClient", "ShopOnline.BlazorClient\ShopOnline.BlazorClient.csproj", "{1E03E32C-B772-40FE-80D9-0E25721829FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.Models", "ShopOnline.Models\ShopOnline.Models.csproj", "{86C20D89-AACB-4186-BE01-589CAF75ABFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.WebApi", "ShopOnline.WebApi\ShopOnline.WebApi.csproj", "{3EABC492-96B9-42D2-84AF-C5665B41CBE8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E03E32C-B772-40FE-80D9-0E25721829FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E03E32C-B772-40FE-80D9-0E25721829FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E03E32C-B772-40FE-80D9-0E25721829FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E03E32C-B772-40FE-80D9-0E25721829FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86C20D89-AACB-4186-BE01-589CAF75ABFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86C20D89-AACB-4186-BE01-589CAF75ABFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86C20D89-AACB-4186-BE01-589CAF75ABFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86C20D89-AACB-4186-BE01-589CAF75ABFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EABC492-96B9-42D2-84AF-C5665B41CBE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EABC492-96B9-42D2-84AF-C5665B41CBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EABC492-96B9-42D2-84AF-C5665B41CBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EABC492-96B9-42D2-84AF-C5665B41CBE8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
