@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
@@ -18,6 +17,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ShopOnline.HttpApiClient\ShopOnline.HttpApiClient.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Pages\CatalogBase.cs">
+        <DependentUpon>Catalog.razor</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

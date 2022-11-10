@@ -6,20 +6,25 @@ namespace ShopOnline.HttpApiClient;
 public class ShopClient : IShopClient
 {
     private const string DefaultHost = "https://localhost:7252";
+    private const string DefaultController = "catalog";
+    private readonly string _controller;
     private readonly string _host;
     private readonly HttpClient _httpClient;
     
 
-    public ShopClient(string host = DefaultHost, 
+    public ShopClient(
+        string controller      = DefaultController, 
+        string host            = DefaultHost, 
         HttpClient? httpClient = null)
     {
-        _host = host;
+        _controller = controller;
+        _host       = host;
         _httpClient = httpClient ?? new HttpClient();
     }
 
     public async Task<IReadOnlyList<Product>> GetProducts()
     {
-        var uri = $"{_host}/get_products";
+        var uri = $"{_host}/{_controller}/get_products";
         var response = await _httpClient
             .GetFromJsonAsync<IReadOnlyList<Product>>(uri);
         
@@ -28,7 +33,7 @@ public class ShopClient : IShopClient
 
     public async Task<Product> GetProduct(long id)
     {
-        var uri = $"{_host}/get_product";
+        var uri = $"{_host}/{_controller}/get_product";
         var product = await _httpClient
             .GetFromJsonAsync<Product>($"{uri}?productId={id}");
         
@@ -46,13 +51,13 @@ public class ShopClient : IShopClient
         {
             throw new ArgumentNullException(nameof(product));
         }
-        var uri = $"{_host}/add_product";
+        var uri = $"{_host}/{_controller}/add_product";
         await _httpClient.PostAsJsonAsync(uri, product);
     }
 
     public async Task<Product> UpdateProduct(long id)
     {
-        var uri = $"{_host}/update_product";
+        var uri = $"{_host}/{_controller}/update_product";
         var product = await _httpClient
             .GetFromJsonAsync<Product>($"{uri}?productId={id}");
         
@@ -68,7 +73,7 @@ public class ShopClient : IShopClient
 
     public async Task DeleteProduct(long id)
     {
-        var uri = $"{_host}/delete_product";
+        var uri = $"{_host}/{_controller}/delete_product";
         var response = await _httpClient
             .PostAsync($"{uri}?productId={id}", null);
         

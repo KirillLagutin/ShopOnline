@@ -1,0 +1,35 @@
+﻿@inject IToastService ToastService
+
+<div class="col-md-4 mb-4">
+    <NavLink class="nav-link" href="ProductInformation">
+        <div class="card">
+            <img class="img-thumbnail" src="@Product.ImageUrl" alt=""/>
+            <div class="card-body">
+                <h5 class="card-title mb-3">
+                    @Product.Name
+                </h5>
+                <p class="card-text">
+                    <b>@Product.Price.ToString("C")</b>
+                    <button class="btn btn-outline-primary"
+                            @onclick="@(() => AddProductToCart(Product))">
+                        Купить
+                    </button>
+                </p>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+@code {
+    
+    [Parameter]
+    public Product Product { get; set; }
+
+    // Button Buy
+    private void AddProductToCart(Product product)
+    {
+    //Cart.AddToCart(product);
+        ToastService.ShowInfo(
+            $"Добавляем в корзину товар {product.Name}");
+    }
+}

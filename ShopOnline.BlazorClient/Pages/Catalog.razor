@@ -1,5 +1,7 @@
 ﻿@page "/Catalog"
 
+@inherits CatalogBase
+
 @inject IShopClient Client
 
 <PageTitle>Catalog</PageTitle>
@@ -8,30 +10,29 @@
 
 @if (Products != null)
 {
-    @foreach (var product in Products!)
+    var productCount = Products.Count();
+
+    if (productCount > 0)
     {
-        <div class="row mt-3">
-            <b>@product.Name</b>
-            <p>@product.Description</p>
-            <p>@product.Price</p>
-            <img src="@product.ImageUrl"/>
-        </div>
-        <hr class="mb-3"/>
+        const int itemsPerRow = 3;
+
+        for (int i = 0; i < productCount; i++)
+        {
+            var productRowList = Products
+                .Skip(i * itemsPerRow)
+                .Take(itemsPerRow)
+                .ToList();
+            
+            <div class="row mt-3">
+                @foreach (var item in productRowList)
+                {
+                    <ProductItem Product="item"/>
+                }
+            </div>
+        }
     }
 }
 else
 {
     <p>Loading...</p>
-}
-
-
-@code
-{
-    private IReadOnlyList<Product>? Products { get; set; } = null!;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        Products = await Client.GetProducts();
-        StateHasChanged();
-    }
 }
