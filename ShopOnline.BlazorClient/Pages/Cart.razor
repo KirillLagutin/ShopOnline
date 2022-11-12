@@ -1,0 +1,61 @@
+﻿@page "/Cart"
+
+@inject IShopClient ShopClient
+
+<PageTitle>Catalog</PageTitle>
+
+<h3 class="mb-5">Cart</h3>
+
+@if (CartItems != null)
+{
+    var productCount = CartItems.Count();
+
+    if (productCount > 0)
+    {
+        const int itemsPerRow = 3;
+
+        for (int i = 0; i < productCount; i++)
+        {
+            var productRowList = CartItems
+                .Skip(i * itemsPerRow)
+                .Take(itemsPerRow)
+                .ToList();
+            
+            <div class="row mt-3">
+                @foreach (var item in productRowList)
+                {
+                    <div class="col-md-4 mb-4">
+                        <NavLink class="nav-link" href="Cart">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        @item.Id
+                                    </h5>
+                                    <h5 class="card-title mb-3">
+                                        @item.ProductId
+                                    </h5>
+                                    <h5 class="card-title mb-3">
+                                        @item.Quantity
+                                    </h5>
+                                </div>
+                            </div>
+                        </NavLink>
+                    </div>
+                }
+            </div>
+        }
+    }
+}
+else
+{
+    <p>No products</p>
+}
+
+@code {
+    public IEnumerable<CartItem> CartItems { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        CartItems = await ShopClient.GetCartItems();
+    }
+}

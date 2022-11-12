@@ -14,10 +14,11 @@ public class ProductRepository : IProductRepository
         _appDbContext = appDbContext;
     }
 
+// -------------------------  Products  ----------------------------
     public async Task<IReadOnlyList<Product>> GetProducts()
         => await _appDbContext.Products.ToListAsync();
 
-    public async Task<Product> GetProduct(long id)
+    public async Task<Product> GetProduct(int id)
         => await _appDbContext.Products.FirstAsync(p => p.Id == id);
 
     public async Task AddProduct(Product product)
@@ -31,12 +32,26 @@ public class ProductRepository : IProductRepository
         _appDbContext.Entry(product).State = EntityState.Modified;
         await _appDbContext.SaveChangesAsync();
     }
-
-    public async Task DeleteProduct(long id)
+    
+    public async Task DeleteProduct(int id)
     {
         var product = await _appDbContext.Products
             .FirstAsync(p => p.Id == id);
         _appDbContext.Remove(product);
+        await _appDbContext.SaveChangesAsync();
+    }
+    
+// -------------------------  Categories  ----------------------------
+    public async Task<IReadOnlyList<ProductCategory>> GetCategories()
+        => await _appDbContext.ProductCategories.ToListAsync();
+    
+// ----------------------------  Cart  -------------------------------
+    public async Task<IReadOnlyList<CartItem>> GetCartItems()
+        => await _appDbContext.CartItems.ToListAsync();
+    
+    public async Task AddToCart(CartItem cartItem)
+    {
+        await _appDbContext.CartItems.AddAsync(cartItem);
         await _appDbContext.SaveChangesAsync();
     }
 }

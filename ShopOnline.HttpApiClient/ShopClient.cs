@@ -15,39 +15,40 @@ public class ShopClient : IShopClient
     public ShopClient(
         string controller      = DefaultController, 
         string host            = DefaultHost, 
-        HttpClient? httpClient = null)
+        HttpClient httpClient = null)
     {
         _controller = controller;
         _host       = host;
         _httpClient = httpClient ?? new HttpClient();
     }
 
+// -------------------------  Products  ----------------------------
     public async Task<IReadOnlyList<Product>> GetProducts()
     {
         var uri = $"{_host}/{_controller}/get_products";
         var response = await _httpClient
             .GetFromJsonAsync<IReadOnlyList<Product>>(uri);
         
-        return response!;
+        return response;
     }
 
-    public async Task<Product> GetProduct(long id)
+    public async Task<Product> GetProduct(int id)
     {
         var uri = $"{_host}/{_controller}/get_product";
         var product = await _httpClient
-            .GetFromJsonAsync<Product>($"{uri}?productId={id}");
+            .GetFromJsonAsync<Product>($"{uri}?id={id}");
         
         if (product is null)
         {
             throw new InvalidOperationException("Product can`t be null");
         }
-
+        
         return product;
     }
     
     public async Task AddProduct(Product product)
     {
-        if (product is not null)
+        if (product is null)
         {
             throw new ArgumentNullException(nameof(product));
         }
@@ -55,11 +56,11 @@ public class ShopClient : IShopClient
         await _httpClient.PostAsJsonAsync(uri, product);
     }
 
-    public async Task<Product> UpdateProduct(long id)
+    public async Task<Product> UpdateProduct(int id)
     {
         var uri = $"{_host}/{_controller}/update_product";
         var product = await _httpClient
-            .GetFromJsonAsync<Product>($"{uri}?productId={id}");
+            .GetFromJsonAsync<Product>($"{uri}?id={id}");
         
         if (product is null)
         {
@@ -71,12 +72,42 @@ public class ShopClient : IShopClient
         return product;
     }
 
-    public async Task DeleteProduct(long id)
+    public async Task DeleteProduct(int id)
     {
         var uri = $"{_host}/{_controller}/delete_product";
         var response = await _httpClient
-            .PostAsync($"{uri}?productId={id}", null);
+            .PostAsync($"{uri}?id={id}", null);
         
         response.EnsureSuccessStatusCode();
+    }
+
+// -------------------------  Categories  ----------------------------
+    public async Task<IReadOnlyList<ProductCategory>> GetCategories()
+    {
+        var uri = $"{_host}/{_controller}/get_categories";
+        var response = await _httpClient
+            .GetFromJsonAsync<IReadOnlyList<ProductCategory>>(uri);
+        
+        return response;
+    }
+    
+// ----------------------------  Cart  -------------------------------
+    public async Task<IReadOnlyList<CartItem>> GetCartItems()
+    {
+        var uri = $"{_host}/{_controller}/get_cartitems";
+        var response = await _httpClient
+            .GetFromJsonAsync<IReadOnlyList<CartItem>>(uri);
+        
+        return response;
+    }
+    
+    public async Task AddToCart(CartItem cartItem)
+    {
+        if (cartItem is null)
+        {
+            throw new ArgumentNullException(nameof(cartItem));
+        }
+        var uri = $"{_host}/{_controller}/add_tocart";
+        await _httpClient.PostAsJsonAsync(uri, cartItem);
     }
 }
