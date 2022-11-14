@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopOnline.WebApi.Data;
+using ShopOnline.WebApi.GenericRepository;
+using ShopOnline.WebApi.GenericRepository.IGenericRepository;
 using ShopOnline.WebApi.Repositories;
 using ShopOnline.WebApi.Repositories.IRepositories;
 
@@ -17,9 +19,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Add CORS
 builder.Services.AddCors();
 
-// Registering repository
+// Registering Generic Repository
+builder.Services.AddScoped(
+    typeof(IRepository<>), typeof(EfRepository<>));
+
+// Registering ProductRepository
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+// Add Controllers
 builder.Services.AddControllers();
 
 // Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

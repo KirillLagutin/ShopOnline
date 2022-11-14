@@ -1,8 +1,9 @@
 ﻿@page "/Cart"
 
 @inject IShopClient ShopClient
+@inject IToastService ToastService
 
-<PageTitle>Catalog</PageTitle>
+<PageTitle>Cart</PageTitle>
 
 <h3 class="mb-5">Cart</h3>
 
@@ -40,10 +41,21 @@
                                 </div>
                             </div>
                         </NavLink>
+                        <button class="btn btn-primary"
+                                @onclick="@(() => DeleteProductFromCart(@item.Id))">
+                            <b>Add to cart</b>
+                        </button>
                     </div>
                 }
             </div>
         }
+        
+        <div class="row-cols-2">
+            <button class="btn btn-primary"
+                    @onclick="@(() => ClearCart())">
+                <b>Add to cart</b>
+            </button>
+        </div>
     }
 }
 else
@@ -57,5 +69,18 @@ else
     protected override async Task OnInitializedAsync()
     {
         CartItems = await ShopClient.GetCartItems();
+    }
+    
+    private void DeleteProductFromCart(int id)
+    {
+        var cartItem = CartItems.First(c => c.Id == id);
+
+        ToastService.ShowInfo("Add to cart product: " +
+            $"{CartItems.First(c=>c.Id == id).Quantity}");
+    }
+
+    private void ClearCart()
+    {
+        
     }
 }

@@ -110,4 +110,13 @@ public class ShopClient : IShopClient
         var uri = $"{_host}/{_controller}/add_tocart";
         await _httpClient.PostAsJsonAsync(uri, cartItem);
     }
+    
+    public async Task DeleteFromCart(int id)
+    {
+        var uri = $"{_host}/{_controller}/delete_fromcart";
+        var response = await _httpClient
+            .PostAsync($"{uri}?id={id}", null);
+        
+        response.EnsureSuccessStatusCode();
+    }
 }

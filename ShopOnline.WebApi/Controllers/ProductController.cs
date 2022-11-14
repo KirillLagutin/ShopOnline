@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Models;
+using ShopOnline.WebApi.GenericRepository.IGenericRepository;
 using ShopOnline.WebApi.Repositories.IRepositories;
 
 namespace ShopOnline.WebApi.Controllers;
@@ -7,9 +8,9 @@ namespace ShopOnline.WebApi.Controllers;
 [Route("catalog")]
 public class ProductController : ControllerBase
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IRepository<Product> _productRepository;
 
-    public ProductController(IProductRepository productRepository)
+    public ProductController(IRepository<Product> productRepository)
     {
         _productRepository = productRepository;
     }
@@ -18,50 +19,50 @@ public class ProductController : ControllerBase
     [HttpGet("get_products")]
     public async Task<IEnumerable<Product>> GetProducts()
     {
-        return await _productRepository.GetProducts();
+        return await _productRepository.GetAll();
     }
     
     [HttpGet("get_product")]
     public async Task <Product> GetProduct(int id)
     {
-        return await _productRepository.GetProduct(id);
+        return await _productRepository.GetById(id);
     }
     
     [HttpPost("add_product")]
     public async Task AddProduct(Product product)
     {
-        await _productRepository.AddProduct(product);
+        await _productRepository.Add(product);
     }
     
     [HttpPost("update_product")]
     public async Task UpdateProduct(Product product)
     {
-        await _productRepository.UpdateProduct(product);
+        await _productRepository.Update(product);
     }
     
     [HttpPost("delete_product")]
     public async Task DeleteProduct(int id)
     {
-        await _productRepository.DeleteProduct(id);
+        await _productRepository.DeleteById(id);
     }
     
-// -------------------------  Categories  ----------------------------
-    [HttpGet("get_categories")]
-    public async Task<IEnumerable<ProductCategory>> GetCategories()
-    {
-        return await _productRepository.GetCategories();
-    }
-    
-    [HttpGet("get_cartitems")]
-    public async Task<IEnumerable<CartItem>> GetCartItems()
-    {
-        return await _productRepository.GetCartItems();
-    }
-    
-// ---------------------------  Cart  -------------------------------
-    [HttpPost("add_tocart")]
-    public async Task AddToCart(CartItem cartItem)
-    {
-        await _productRepository.AddToCart(cartItem);
-    }
+// // -------------------------  Categories  ----------------------------
+//     [HttpGet("get_categories")]
+//     public async Task<IEnumerable<ProductCategory>> GetCategories()
+//     {
+//         return await _productRepository.GetCategories();
+//     }
+//     
+//     [HttpGet("get_cartitems")]
+//     public async Task<IEnumerable<CartItem>> GetCartItems()
+//     {
+//         return await _productRepository.GetCartItems();
+//     }
+//     
+// // ---------------------------  Cart  -------------------------------
+//     [HttpPost("add_tocart")]
+//     public async Task AddToCart(CartItem cartItem)
+//     {
+//         await _productRepository.AddToCart(cartItem);
+//     }
 }
