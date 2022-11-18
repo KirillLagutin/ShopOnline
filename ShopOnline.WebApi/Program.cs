@@ -4,6 +4,7 @@ using ShopOnline.WebApi.GenericRepository;
 using ShopOnline.WebApi.GenericRepository.IGenericRepository;
 using ShopOnline.WebApi.Repositories;
 using ShopOnline.WebApi.Repositories.IRepositories;
+using ShopOnline.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,12 @@ builder.Services.AddScoped(
 
 // Registering ProductRepository
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+// Registering AccountRepository
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
+// Registering AccountService
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Add Controllers
 builder.Services.AddControllers();

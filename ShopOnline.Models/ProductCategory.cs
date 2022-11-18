@@ -1,7 +1,8 @@
 ﻿namespace ShopOnline.Models;
 
-public class ProductCategory
+public class ProductCategory : IEntity
 {
-    public int Id { get; set; }
+    public Guid Id { get; init; }
     public string Name { get; set; }
+    public string IconCss { get; set; }
 }

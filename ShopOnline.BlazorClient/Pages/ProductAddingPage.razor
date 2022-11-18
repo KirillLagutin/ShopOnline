@@ -1,0 +1,53 @@
+﻿@page "/ProductAdding"
+
+@inject IShopClient ShopClient
+@inject IToastService ToastService
+
+<PageTitle>Добавление товара</PageTitle>
+
+<h3>Добавление товара</h3>
+<hr/>
+<div class="row">
+    <div class="col-md-5">
+        <EditForm Model="_model" OnValidSubmit="AddProduct">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            
+            <div class="list-group">
+                <label>Название:</label>
+                <InputText class="form-control" @bind-Value="_model.Name"/>
+            </div>
+            <div class="list-group">
+                <label>Описание:</label>
+                <InputText class="form-control" @bind-Value="_model.Description"/>
+            </div>
+            <div class="list-group">
+                <label>URL картинки:</label>
+                <InputText class="form-control" @bind-Value="_model.ImageUrl"/>
+            </div>
+            <div class="list-group">
+                <label>Цена:</label>
+                <InputNumber class="form-control" @bind-Value="_model.Price"/>
+            </div>
+            <div class="list-group">
+                <label>Колличество:</label>
+                <InputNumber class="form-control" @bind-Value="_model.Quantity"/>
+            </div>
+            <div class="list-group">
+                <input type="submit" class="btn btn-primary" value="Добавить"/>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private Product _model = new();
+    private bool _register = false;
+
+    private async Task AddProduct()
+    {
+        await ShopClient.AddProduct(_model);
+        ToastService.ShowSuccess("Товар добавлен");
+    }
+}

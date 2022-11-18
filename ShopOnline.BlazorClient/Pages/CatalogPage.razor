@@ -2,9 +2,17 @@
 
 @inherits CatalogBase
 
-<PageTitle>Catalog</PageTitle>
+<PageTitle>Список товаров</PageTitle>
 
-<h3 class="mb-5">Product List</h3>
+<h3 class="mb-5">
+    Список товаров 
+    <button @onclick="NavigateToAddProduct" class="btn btn-primary">
+        Добавить товар
+    </button>
+    <button @onclick="NavigateToDeleteProduct" class="btn btn-primary">
+        Удалить товар
+    </button>
+</h3>
 
 @if (Products != null)
 {
@@ -32,5 +40,6 @@
 }
 else
 {
-    <p>Loading...</p>
+    <LoadingIcon/>
 }
+

@@ -3,9 +3,9 @@
 @inject IShopClient ShopClient
 @inject IToastService ToastService
 
-<PageTitle>Cart</PageTitle>
+<PageTitle>Корзина</PageTitle>
 
-<h3 class="mb-5">Cart</h3>
+<h3 class="mb-5">Корзина</h3>
 
 @if (CartItems != null)
 {
@@ -43,7 +43,7 @@
                         </NavLink>
                         <button class="btn btn-primary"
                                 @onclick="@(() => DeleteProductFromCart(@item.Id))">
-                            <b>Add to cart</b>
+                            <b>Удалить из корзины</b>
                         </button>
                     </div>
                 }
@@ -53,25 +53,25 @@
         <div class="row-cols-2">
             <button class="btn btn-primary"
                     @onclick="@(() => ClearCart())">
-                <b>Add to cart</b>
+                <b>Очистить корзину</b>
             </button>
         </div>
     }
 }
 else
 {
-    <p>No products</p>
+    <LoadingIcon/>
 }
 
 @code {
-    public IEnumerable<CartItem> CartItems { get; set; }
+    public IEnumerable<CartItem>? CartItems { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
         CartItems = await ShopClient.GetCartItems();
     }
     
-    private void DeleteProductFromCart(int id)
+    private void DeleteProductFromCart(Guid id)
     {
         var cartItem = CartItems.First(c => c.Id == id);
 

@@ -15,7 +15,7 @@ public class ShopClient : IShopClient
     public ShopClient(
         string controller      = DefaultController, 
         string host            = DefaultHost, 
-        HttpClient httpClient = null)
+        HttpClient? httpClient = null)
     {
         _controller = controller;
         _host       = host;
@@ -23,7 +23,7 @@ public class ShopClient : IShopClient
     }
 
 // -------------------------  Products  ----------------------------
-    public async Task<IReadOnlyList<Product>> GetProducts()
+    public async Task<IReadOnlyList<Product>?> GetProducts()
     {
         var uri = $"{_host}/{_controller}/get_products";
         var response = await _httpClient
@@ -32,7 +32,7 @@ public class ShopClient : IShopClient
         return response;
     }
 
-    public async Task<Product> GetProduct(int id)
+    public async Task<Product?> GetProduct(Guid id)
     {
         var uri = $"{_host}/{_controller}/get_product";
         var product = await _httpClient
@@ -56,7 +56,7 @@ public class ShopClient : IShopClient
         await _httpClient.PostAsJsonAsync(uri, product);
     }
 
-    public async Task<Product> UpdateProduct(int id)
+    public async Task<Product> UpdateProduct(Guid id)
     {
         var uri = $"{_host}/{_controller}/update_product";
         var product = await _httpClient
@@ -72,7 +72,7 @@ public class ShopClient : IShopClient
         return product;
     }
 
-    public async Task DeleteProduct(int id)
+    public async Task DeleteProduct(Guid id)
     {
         var uri = $"{_host}/{_controller}/delete_product";
         var response = await _httpClient
@@ -82,7 +82,7 @@ public class ShopClient : IShopClient
     }
 
 // -------------------------  Categories  ----------------------------
-    public async Task<IReadOnlyList<ProductCategory>> GetCategories()
+    public async Task<IReadOnlyList<ProductCategory>?> GetCategories()
     {
         var uri = $"{_host}/{_controller}/get_categories";
         var response = await _httpClient
@@ -92,7 +92,7 @@ public class ShopClient : IShopClient
     }
     
 // ----------------------------  Cart  -------------------------------
-    public async Task<IReadOnlyList<CartItem>> GetCartItems()
+    public async Task<IReadOnlyList<CartItem>?> GetCartItems()
     {
         var uri = $"{_host}/{_controller}/get_cartitems";
         var response = await _httpClient
@@ -111,12 +111,21 @@ public class ShopClient : IShopClient
         await _httpClient.PostAsJsonAsync(uri, cartItem);
     }
     
-    public async Task DeleteFromCart(int id)
+    public async Task DeleteFromCart(Guid id)
     {
         var uri = $"{_host}/{_controller}/delete_fromcart";
         var response = await _httpClient
             .PostAsync($"{uri}?id={id}", null);
         
+        response.EnsureSuccessStatusCode();
+    }
+    
+// ----------------------------  Account  -------------------------------
+    public async Task RegisterAccount(Account account)
+    {
+        var uri = $"{_host}/account/register";
+        var response = await _httpClient.PostAsJsonAsync(uri, account);
+
         response.EnsureSuccessStatusCode();
     }
 }

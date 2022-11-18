@@ -1,13 +1,13 @@
-﻿@page "/ProductInfo/{Id:int}"
+﻿@page "/ProductInfo/{Id:guid}"
 
 @inject IToastService ToastService
 @inject IShopClient ShopClient
 
-<PageTitle>Product Info</PageTitle>
+<PageTitle>Информация о товаре</PageTitle>
 
 @if (Product != null)
 {
-    <h3 class="mb-5">Product Information</h3>
+    <h3 class="mb-5">Информация о товаре</h3>
     <div class="row">
         <div class="col-md-6 mb-4">
             <img class="img-fluid" src="@Product.ImageUrl">
@@ -18,7 +18,7 @@
             <p class="mb-4">
                 <b>
                     @Product.Price.ToString("C")&nbsp;
-                    (@Product.Quantity items in stock)
+                    (@Product.Quantity товаров в наличии)
                 </b>
             </p>
             <div>
@@ -32,16 +32,16 @@
 }
 else
 {
-    <h3 class="mb-5">Product out of stock</h3>
+    <h3 class="mb-5">Нет такого товара</h3>
 }
 
 
 @code {
 
     [Parameter]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
-    private Product Product { get; set; }
+    private Product? Product { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,11 +49,11 @@ else
     }
     
     // Button Buy
-    private void AddProductToCart(Product product)
+    private void AddProductToCart(Product? product)
     {
         ShopClient.AddToCart(new CartItem());
         
         ToastService.ShowInfo(
-            $"Add to cart product: {product.Name}");
+            $"Add to cart product: {product?.Name}");
     }
 }

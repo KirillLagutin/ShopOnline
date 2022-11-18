@@ -2,9 +2,9 @@
 
 @inherits CategoriesBase
 
-<PageTitle>Categories</PageTitle>
+<PageTitle>Категории</PageTitle>
 
-<h3 class="mb-5">Product List</h3>
+<h3 class="mb-5">Список товаров</h3>
 
 @if (Products != null)
 {
@@ -22,7 +22,7 @@
         @foreach (var prodGroup in groupedProductsByCategory)
         {
             <h4>
-                @ProductCategories.First(pc => 
+                @ProductCategories?.First(pc => 
                     pc.Id == prodGroup.First().CategoryId).Name
             </h4>
                                                                                  
@@ -41,5 +41,5 @@
 }
 else
 {
-    <p>Loading...</p>
+    <LoadingIcon/>
 }

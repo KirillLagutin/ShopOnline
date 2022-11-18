@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,11 +21,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Pages\CatalogBase.cs">
-        <DependentUpon>Catalog.razor</DependentUpon>
+      <Compile Update="Pages\CatalogPageBase.cs">
+        <DependentUpon>CatalogPage.razor</DependentUpon>
       </Compile>
-      <Compile Update="Pages\CategoriesBase.cs">
-        <DependentUpon>Categories.razor</DependentUpon>
+      <Compile Update="Pages\CategoriesPageBase.cs">
+        <DependentUpon>CategoriesPage.razor</DependentUpon>
       </Compile>
     </ItemGroup>
 

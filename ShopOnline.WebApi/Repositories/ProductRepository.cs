@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopOnline.BlazorClient.Pages;
 using ShopOnline.Models;
 using ShopOnline.WebApi.Data;
 using ShopOnline.WebApi.Repositories.IRepositories;
@@ -18,7 +19,7 @@ public class ProductRepository : IProductRepository
     public async Task<IReadOnlyList<Product>> GetProducts()
         => await _appDbContext.Products.ToListAsync();
 
-    public async Task<Product> GetProduct(int id)
+    public async Task<Product> GetProduct(Guid id)
         => await _appDbContext.Products.FirstAsync(p => p.Id == id);
 
     public async Task AddProduct(Product product)
@@ -33,7 +34,7 @@ public class ProductRepository : IProductRepository
         await _appDbContext.SaveChangesAsync();
     }
     
-    public async Task DeleteProduct(int id)
+    public async Task DeleteProduct(Guid id)
     {
         var product = await _appDbContext.Products
             .FirstAsync(p => p.Id == id);
@@ -44,6 +45,16 @@ public class ProductRepository : IProductRepository
 // -------------------------  Categories  ----------------------------
     public async Task<IReadOnlyList<ProductCategory>> GetCategories()
         => await _appDbContext.ProductCategories.ToListAsync();
+    
+    public async Task<ProductCategory> GetCategory(Guid id)
+        => await _appDbContext.ProductCategories
+            .FirstAsync(p => p.Id == id);
+    
+    public async Task AddCategory(ProductCategory categories)
+    {
+        await _appDbContext.ProductCategories.AddAsync(categories);
+        await _appDbContext.SaveChangesAsync();
+    }
     
 // ----------------------------  Cart  -------------------------------
     public async Task<IReadOnlyList<CartItem>> GetCartItems()

@@ -5,9 +5,9 @@ using ShopOnline.WebApi.GenericRepository.IGenericRepository;
 
 namespace ShopOnline.WebApi.GenericRepository;
 
-class EfRepository<TEntity> : IRepository<TEntity> where TEntity: class, IEntity
+public class EfRepository<TEntity> : IRepository<TEntity> where TEntity: class, IEntity
 {
-    private readonly AppDbContext _dbContext;
+    protected readonly AppDbContext _dbContext;
 
     public EfRepository(AppDbContext dbContext)
     {
@@ -17,7 +17,7 @@ class EfRepository<TEntity> : IRepository<TEntity> where TEntity: class, IEntity
     private DbSet<TEntity> Entities => _dbContext.Set<TEntity>();
 
 
-    public virtual Task<TEntity> GetById(int id)
+    public virtual Task<TEntity> GetById(Guid id)
         => Entities.FirstAsync(it => it.Id == id);
 
     public virtual async Task<IReadOnlyList<TEntity>> GetAll()
@@ -35,7 +35,7 @@ class EfRepository<TEntity> : IRepository<TEntity> where TEntity: class, IEntity
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task DeleteById(int id)
+    public async Task DeleteById(Guid id)
     {
         var product = await Entities
             .FirstAsync(p => p.Id == id);
