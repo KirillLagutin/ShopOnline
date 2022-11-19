@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using ShopOnline.Models;
+using ShopOnline.Models.Dto;
 
 namespace ShopOnline.HttpApiClient;
 
@@ -121,7 +122,7 @@ public class ShopClient : IShopClient
     }
     
 // ----------------------------  Account  -------------------------------
-    public async Task RegisterAccount(Account account)
+    public async Task RegisterAccount(AccountDto account)
     {
         var uri = $"{_host}/account/register";
         var response = await _httpClient.PostAsJsonAsync(uri, account);

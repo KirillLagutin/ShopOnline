@@ -1,4 +1,5 @@
 using ShopOnline.Models;
+using ShopOnline.Models.Dto;
 
 namespace ShopOnline.HttpApiClient;
 
@@ -13,5 +14,5 @@ public interface IShopClient
     Task<IReadOnlyList<CartItem>?> GetCartItems();
     Task AddToCart(CartItem cartItem);
     Task DeleteFromCart(Guid id);
-    Task RegisterAccount(Account account);
+    Task RegisterAccount(AccountDto account);
 }

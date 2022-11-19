@@ -11,11 +11,11 @@
     <div class="col-md-5">
         <EditForm Model="_model" OnValidSubmit="AddProduct">
             <DataAnnotationsValidator/>
-            <ValidationSummary/>
-            
+
             <div class="list-group">
                 <label>Название:</label>
                 <InputText class="form-control" @bind-Value="_model.Name"/>
+                <ValidationSummary/>
             </div>
             <div class="list-group">
                 <label>Описание:</label>
@@ -33,6 +33,10 @@
                 <label>Колличество:</label>
                 <InputNumber class="form-control" @bind-Value="_model.Quantity"/>
             </div>
+            @* <div class="list-group"> *@
+            @*     <label>ID категории:</label> *@
+            @*     <InputText class="form-control" @bind-Value="_model.CategoryId"/> *@
+            @* </div> *@
             <div class="list-group">
                 <input type="submit" class="btn btn-primary" value="Добавить"/>
             </div>
@@ -43,7 +47,6 @@
 @code {
 
     private Product _model = new();
-    private bool _register = false;
 
     private async Task AddProduct()
     {

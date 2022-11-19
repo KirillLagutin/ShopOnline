@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopOnline.Models;
+namespace ShopOnline.Models.Dto;
 
 public class AccountDto
 {

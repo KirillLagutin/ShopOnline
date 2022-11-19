@@ -24,9 +24,6 @@
       <Compile Update="Pages\CatalogPageBase.cs">
         <DependentUpon>CatalogPage.razor</DependentUpon>
       </Compile>
-      <Compile Update="Pages\CategoriesPageBase.cs">
-        <DependentUpon>CategoriesPage.razor</DependentUpon>
-      </Compile>
     </ItemGroup>
 
 </Project>

@@ -24,7 +24,7 @@
             <div>
                 <button class="btn btn-primary"
                         @onclick="@(() => AddProductToCart(Product))">
-                    <b>Add to cart</b>
+                    <b>Добавить в корзину</b>
                 </button>
             </div>
         </div>
@@ -32,7 +32,7 @@
 }
 else
 {
-    <h3 class="mb-5">Нет такого товара</h3>
+    <LoadingIcon/>
 }
 
 
@@ -47,13 +47,13 @@ else
     {
         Product = await ShopClient.GetProduct(Id);
     }
-    
+
     // Button Buy
-    private void AddProductToCart(Product? product)
+    private async Task AddProductToCart(Product? product)
     {
-        ShopClient.AddToCart(new CartItem());
-        
+        await ShopClient.AddToCart(new CartItem());
+
         ToastService.ShowInfo(
-            $"Add to cart product: {product?.Name}");
+            $"{product?.Name} теперь в корзине");
     }
 }

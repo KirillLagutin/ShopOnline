@@ -51,7 +51,7 @@ public class ProductController : ControllerBase
     
 // -------------------------  Categories  ----------------------------
     [HttpGet("get_categories")]
-    public async Task<IReadOnlyList<ProductCategory>> GetCategories()
+    public async Task<IEnumerable<ProductCategory>> GetCategories()
     {
         return await _category.GetAll();
     }

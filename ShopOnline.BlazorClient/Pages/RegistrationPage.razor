@@ -1,4 +1,5 @@
 ﻿@page "/Registration"
+@using ShopOnline.Models.Dto
 
 @inject IShopClient ShopClient
 @inject IToastService ToastService
@@ -19,19 +20,23 @@
         <tr>
             <td>Email</td>
             <td>
-                <InputText class="form-control" @bind-Value="_model.Email"/>
+                <InputText type="email" 
+                           class="form-control" @bind-Value="_model.Email"/>
             </td>
         </tr>
         <tr>
             <td>Пароль</td>
             <td>
-                <InputText class="form-control" @bind-Value="_model.Password"/>
+                <InputText type="password" 
+                           class="form-control" @bind-Value="_model.Password"/>
             </td>
         </tr>
         <tr><td><ValidationSummary/></td></tr>
-        <tr><input type="submit" class="btn btn-primary" value="Зарегистрироваться"/></tr>
+        <tr><input type="submit" class="btn btn-primary" 
+                   value="Зарегистрироваться"/></tr>
     </table>
 </EditForm>
+
 @if (_register)
 {
     ToastService.ShowSuccess("Вы успешно зарегистрированы!");
@@ -39,7 +44,7 @@
 
 @code {
 
-    private Account _model = new();
+    private readonly AccountDto _model = new();
     private bool _register = false;
 
     private async Task Register()

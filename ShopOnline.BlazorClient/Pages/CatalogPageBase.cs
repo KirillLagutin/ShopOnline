@@ -12,20 +12,37 @@ public class CatalogBase : ComponentBase
     [Inject]
     public NavigationManager? NavigationManager { get; set; }
 
-    public IEnumerable<Product>? Products { get; set; }
-    
+    protected IEnumerable<Product>? Products { get; set; }
+    private IEnumerable<ProductCategory>? ProductCategories { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         Products = await ShopClient.GetProducts();
+        ProductCategories = await ShopClient.GetCategories();
+    }
+
+    protected IOrderedEnumerable<IGrouping<Guid, Product>> GetGroupedProductByCategory()
+    {
+        return from   product in Products
+               group  product by product.CategoryId into prodByCatGroup
+               orderby ProductCategories
+               select prodByCatGroup;
+    }
+
+    protected string GetCategoryName(IGrouping<Guid, Product> productGroup)
+    {
+        return ProductCategories?.First(pc =>
+            pc.Id == productGroup.First().CategoryId).Name 
+               ?? throw new InvalidOperationException();
     }
 
     protected void NavigateToAddProduct()
     {
-        NavigationManager.NavigateTo("/ProductAdding");
+        NavigationManager?.NavigateTo("/ProductAdding");
     }
 
     protected void NavigateToDeleteProduct()
     {
-        NavigationManager.NavigateTo("/ProductDeleting");
+        NavigationManager?.NavigateTo("/ProductDeleting");
     }
 }
