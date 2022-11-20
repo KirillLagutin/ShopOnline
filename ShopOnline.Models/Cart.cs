@@ -8,5 +8,5 @@ public class Cart : IEntity
     public Guid AccountId { get; set; }
     
     [ForeignKey("AccountId")]
-    public Account Account { get; set; }
+    public Account? Account { get; set; }
 }

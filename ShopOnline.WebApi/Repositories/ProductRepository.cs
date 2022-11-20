@@ -30,7 +30,7 @@ public class ProductRepository : IProductRepository
 
     public async Task UpdateProduct(Product product)
     {
-        _appDbContext.Entry(product).State = EntityState.Modified;
+        _appDbContext.Products.Entry(product).State = EntityState.Modified;
         await _appDbContext.SaveChangesAsync();
     }
     
@@ -38,7 +38,7 @@ public class ProductRepository : IProductRepository
     {
         var product = await _appDbContext.Products
             .FirstAsync(p => p.Id == id);
-        _appDbContext.Remove(product);
+        _appDbContext.Products.Remove(product);
         await _appDbContext.SaveChangesAsync();
     }
     
@@ -63,6 +63,23 @@ public class ProductRepository : IProductRepository
     public async Task AddToCart(CartItem cartItem)
     {
         await _appDbContext.CartItems.AddAsync(cartItem);
+        await _appDbContext.SaveChangesAsync();
+    }
+    
+    public async Task DeleteCartItem(Guid id)
+    {
+        var cartItem = await _appDbContext.CartItems
+            .FirstAsync(p => p.Id == id);
+        _appDbContext.CartItems.Remove(cartItem);
+        await _appDbContext.SaveChangesAsync();
+    }
+    
+    public async Task ClearCart()
+    {
+        foreach (var item in _appDbContext.CartItems)
+        {
+            _appDbContext.CartItems.Remove(item);
+        }
         await _appDbContext.SaveChangesAsync();
     }
 }

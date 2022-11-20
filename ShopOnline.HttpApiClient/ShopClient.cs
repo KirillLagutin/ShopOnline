@@ -7,18 +7,15 @@ namespace ShopOnline.HttpApiClient;
 public class ShopClient : IShopClient
 {
     private const string DefaultHost = "https://localhost:7252";
-    private const string DefaultController = "catalog";
     private readonly string _controller;
     private readonly string _host;
     private readonly HttpClient _httpClient;
     
 
     public ShopClient(
-        string controller      = DefaultController, 
         string host            = DefaultHost, 
         HttpClient? httpClient = null)
     {
-        _controller = controller;
         _host       = host;
         _httpClient = httpClient ?? new HttpClient();
     }
@@ -26,7 +23,7 @@ public class ShopClient : IShopClient
 // -------------------------  Products  ----------------------------
     public async Task<IReadOnlyList<Product>?> GetProducts()
     {
-        var uri = $"{_host}/{_controller}/get_products";
+        var uri = $"{_host}/catalog/get_products";
         var response = await _httpClient
             .GetFromJsonAsync<IReadOnlyList<Product>>(uri);
         
@@ -35,7 +32,7 @@ public class ShopClient : IShopClient
 
     public async Task<Product?> GetProduct(Guid id)
     {
-        var uri = $"{_host}/{_controller}/get_product";
+        var uri = $"{_host}/catalog/get_product";
         var product = await _httpClient
             .GetFromJsonAsync<Product>($"{uri}?id={id}");
         
@@ -53,13 +50,13 @@ public class ShopClient : IShopClient
         {
             throw new ArgumentNullException(nameof(product));
         }
-        var uri = $"{_host}/{_controller}/add_product";
+        var uri = $"{_host}/catalog/add_product";
         await _httpClient.PostAsJsonAsync(uri, product);
     }
 
     public async Task<Product> UpdateProduct(Guid id)
     {
-        var uri = $"{_host}/{_controller}/update_product";
+        var uri = $"{_host}/catalog/update_product";
         var product = await _httpClient
             .GetFromJsonAsync<Product>($"{uri}?id={id}");
         
@@ -75,7 +72,7 @@ public class ShopClient : IShopClient
 
     public async Task DeleteProduct(Guid id)
     {
-        var uri = $"{_host}/{_controller}/delete_product";
+        var uri = $"{_host}/catalog/delete_product";
         var response = await _httpClient
             .PostAsync($"{uri}?id={id}", null);
         
@@ -85,7 +82,7 @@ public class ShopClient : IShopClient
 // -------------------------  Categories  ----------------------------
     public async Task<IReadOnlyList<ProductCategory>?> GetCategories()
     {
-        var uri = $"{_host}/{_controller}/get_categories";
+        var uri = $"{_host}/category/get_categories";
         var response = await _httpClient
             .GetFromJsonAsync<IReadOnlyList<ProductCategory>>(uri);
         
@@ -95,7 +92,7 @@ public class ShopClient : IShopClient
 // ----------------------------  Cart  -------------------------------
     public async Task<IReadOnlyList<CartItem>?> GetCartItems()
     {
-        var uri = $"{_host}/{_controller}/get_cartitems";
+        var uri = $"{_host}/cart/get_cartitems";
         var response = await _httpClient
             .GetFromJsonAsync<IReadOnlyList<CartItem>>(uri);
         
@@ -108,16 +105,26 @@ public class ShopClient : IShopClient
         {
             throw new ArgumentNullException(nameof(cartItem));
         }
-        var uri = $"{_host}/{_controller}/add_tocart";
+        var uri = $"{_host}/cart/add_cartitem";
         await _httpClient.PostAsJsonAsync(uri, cartItem);
     }
     
-    public async Task DeleteFromCart(Guid id)
+    public async Task DeleteCartItem(Guid id)
     {
-        var uri = $"{_host}/{_controller}/delete_fromcart";
+        var uri = $"{_host}/cart/delete_cartitem";
         var response = await _httpClient
-            .PostAsync($"{uri}?id={id}", null);
+            .DeleteAsync($"{uri}?id={id}");
         
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task ClearCart()
+    {
+
+        var uri = $"{_host}/cart/clear_cart";
+        var response = await _httpClient
+            .DeleteAsync(uri);
+
         response.EnsureSuccessStatusCode();
     }
     

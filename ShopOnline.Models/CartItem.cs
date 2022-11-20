@@ -10,8 +10,8 @@ public class CartItem : IEntity
     public int Quantity { get; set; }
     
     [ForeignKey("CartId")] 
-    public Cart Cart { get; set; }
+    public Cart? Cart { get; set; }
 
     [ForeignKey("ProductId")] 
-    public Product Product { get; set; }
+    public Product? Product { get; set; }
 }

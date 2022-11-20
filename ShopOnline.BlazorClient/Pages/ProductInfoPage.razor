@@ -10,7 +10,8 @@
     <h3 class="mb-5">Информация о товаре</h3>
     <div class="row">
         <div class="col-md-6 mb-4">
-            <img class="img-fluid" src="@Product.ImageUrl">
+            <img class="img-fluid" src="@Product.ImageUrl" 
+                 alt="@Product.Name">
         </div>
         <div class="col-md-6">
             <h3>@Product.Name</h3>
@@ -42,18 +43,24 @@ else
     public Guid Id { get; set; }
 
     private Product? Product { get; set; }
+    
+    private IEnumerable<CartItem>? CartItems { get; set; } 
 
     protected override async Task OnInitializedAsync()
     {
         Product = await ShopClient.GetProduct(Id);
+        CartItems = await ShopClient.GetCartItems();
     }
-
-    // Button Buy
+    
     private async Task AddProductToCart(Product? product)
     {
-        await ShopClient.AddToCart(new CartItem());
+        if (CartItems != null)
+        {
+            var cartItem = CartItems.First(ci => ci.ProductId == product?.Id);
+            await ShopClient.AddToCart(cartItem);
 
-        ToastService.ShowInfo(
-            $"{product?.Name} теперь в корзине");
+            ToastService.ShowInfo(
+                $"{product?.Name} теперь в корзине");
+        }
     }
 }

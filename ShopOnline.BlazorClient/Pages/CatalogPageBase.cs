@@ -21,19 +21,18 @@ public class CatalogBase : ComponentBase
         ProductCategories = await ShopClient.GetCategories();
     }
 
-    protected IOrderedEnumerable<IGrouping<Guid, Product>> GetGroupedProductByCategory()
+    protected IEnumerable<IGrouping<Guid, Product>> GetGroupedProductByCategory()
     {
-        return from   product in Products
-               group  product by product.CategoryId into prodByCatGroup
+        return from    product in Products
+               group   product by product.CategoryId into prodByCatGroup
                orderby ProductCategories
-               select prodByCatGroup;
+               select  prodByCatGroup;
     }
 
-    protected string GetCategoryName(IGrouping<Guid, Product> productGroup)
+    protected string? GetCategoryName(IGrouping<Guid, Product> productGroup)
     {
         return ProductCategories?.First(pc =>
-            pc.Id == productGroup.First().CategoryId).Name 
-               ?? throw new InvalidOperationException();
+            pc.Id == productGroup.First().CategoryId).Name;
     }
 
     protected void NavigateToAddProduct()

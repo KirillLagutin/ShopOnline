@@ -5,57 +5,42 @@
 
 <PageTitle>Корзина</PageTitle>
 
-<h3 class="mb-5">Корзина</h3>
+<h3 class="mb-5">
+    Корзина
+    <button class="btn btn-primary" @onclick="@(ClearCart)">
+        <b>Очистить корзину</b>
+    </button>
+</h3>
 
 @if (CartItems != null)
 {
-    var productCount = CartItems.Count();
+    var cartItemsCount = CartItems.Count();
 
-    if (productCount > 0)
+    if (cartItemsCount > 0)
     {
         const int itemsPerRow = 3;
 
-        for (int i = 0; i < productCount; i++)
+        for (int i = 0; i < cartItemsCount; i++)
         {
-            var productRowList = CartItems
+            var cartItemRowList = CartItems
                 .Skip(i * itemsPerRow)
                 .Take(itemsPerRow)
                 .ToList();
-            
+
             <div class="row mt-3">
-                @foreach (var item in productRowList)
+                @foreach (var item in cartItemRowList)
                 {
                     <div class="col-md-4 mb-4">
-                        <NavLink class="nav-link" href="Cart">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title mb-3">
-                                        @item.Id
-                                    </h5>
-                                    <h5 class="card-title mb-3">
-                                        @item.ProductId
-                                    </h5>
-                                    <h5 class="card-title mb-3">
-                                        @item.Quantity
-                                    </h5>
-                                </div>
-                            </div>
-                        </NavLink>
+                        <DeletingItem Product="@Products?.First(p=>p.Id == item.ProductId)"/>
+                        
                         <button class="btn btn-primary"
-                                @onclick="@(() => DeleteProductFromCart(@item.Id))">
+                                @onclick="@(() => DeleteProductFromCart(item.Id))">
                             <b>Удалить из корзины</b>
                         </button>
                     </div>
                 }
             </div>
         }
-        
-        <div class="row-cols-2">
-            <button class="btn btn-primary"
-                    @onclick="@(() => ClearCart())">
-                <b>Очистить корзину</b>
-            </button>
-        </div>
     }
 }
 else
@@ -64,23 +49,26 @@ else
 }
 
 @code {
-    public IEnumerable<CartItem>? CartItems { get; set; }
-    
+    private IEnumerable<CartItem>? CartItems { get; set; }
+    private IEnumerable<Product>? Products { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         CartItems = await ShopClient.GetCartItems();
-    }
-    
-    private void DeleteProductFromCart(Guid id)
-    {
-        var cartItem = CartItems.First(c => c.Id == id);
-
-        ToastService.ShowInfo("Add to cart product: " +
-            $"{CartItems.First(c=>c.Id == id).Quantity}");
+        Products = await ShopClient.GetProducts();
     }
 
-    private void ClearCart()
+    private async Task DeleteProductFromCart(Guid id)
     {
-        
+        await ShopClient.DeleteCartItem(id);
+
+        ToastService.ShowInfo("Товар удалён из корзины");
+    }
+
+    private async Task ClearCart()
+    {
+        await ShopClient.ClearCart();
+
+        ToastService.ShowInfo("Корзина очищена");
     }
 }

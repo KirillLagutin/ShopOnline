@@ -2,15 +2,15 @@
 @inject IShopClient ShopClient
 
 <div class="col-md-4 mb-4">
-    <a href="/ProductInfo/@Product.Id">
+    <a href="/ProductInfo/@Product?.Id">
         <div class="card">
-            <img class="img-thumbnail" src="@Product.ImageUrl" alt=""/>
+            <img class="img-thumbnail" src="@Product?.ImageUrl" alt=""/>
             <div class="card-body">
                 <h5 class="card-title mb-3">
-                    @Product.Name
+                    @Product?.Name
                 </h5>
                 <p class="card-text">
-                    <b>@Product.Price.ToString("C")</b>
+                    <b>@Product?.Price.ToString("C")</b>
                     <button class="btn btn-outline-primary"
                             @onclick="@(() => AddProductToCart(Product))">
                         <b>В корзину</b>
@@ -24,21 +24,20 @@
 @code {
     
     [Parameter]
-    public Product Product { get; set; }
+    public Product? Product { get; set; }
 
-    public IEnumerable<CartItem>? CartItems { get; set; }
+    private IEnumerable<CartItem>? CartItems { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
         CartItems = await ShopClient.GetCartItems();
     }
-
-    // Button Buy
-    private void AddProductToCart(Product product)
+    
+    private async Task AddProductToCart(Product? product)
     {
-        ShopClient.AddToCart(new CartItem());
+        await ShopClient.AddToCart(CartItems.First(ci=>ci.ProductId == product?.Id));
         
         ToastService.ShowInfo(
-            $"Add to cart product: {product.Name}");
+            $"{product?.Name} в корзине");
     }
 }

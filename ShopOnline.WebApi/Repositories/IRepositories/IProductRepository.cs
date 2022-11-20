@@ -15,4 +15,6 @@ public interface IProductRepository
     Task AddCategory(ProductCategory categories);
     Task<IReadOnlyList<CartItem>> GetCartItems();
     Task AddToCart(CartItem cartItem);
+    Task DeleteCartItem(Guid id);
+    Task ClearCart();
 }

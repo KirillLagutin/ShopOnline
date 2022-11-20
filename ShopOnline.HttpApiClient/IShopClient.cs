@@ -13,6 +13,7 @@ public interface IShopClient
     Task<IReadOnlyList<ProductCategory>?> GetCategories();
     Task<IReadOnlyList<CartItem>?> GetCartItems();
     Task AddToCart(CartItem cartItem);
-    Task DeleteFromCart(Guid id);
+    Task DeleteCartItem(Guid id);
+    Task ClearCart();
     Task RegisterAccount(AccountDto account);
 }

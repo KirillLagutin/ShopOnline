@@ -42,4 +42,13 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity: class, 
         _dbContext.Remove(product);
         await _dbContext.SaveChangesAsync();
     }
+    
+    public async Task ClearItems()
+    {
+        foreach (var item in _dbContext.CartItems)
+        {
+            _dbContext.CartItems.Remove(item);
+        }
+        await _dbContext.SaveChangesAsync();
+    }
 }
