@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopOnline.Data.Ef.Data;
+using ShopOnline.Domain.IGenericRepository;
 using ShopOnline.Models;
-using ShopOnline.WebApi.Data;
-using ShopOnline.WebApi.GenericRepository.IGenericRepository;
 
-namespace ShopOnline.WebApi.GenericRepository;
+namespace ShopOnline.Data.Ef.GenericRepository;
 
 public class EfRepository<TEntity> : IRepository<TEntity> where TEntity: class, IEntity
 {
@@ -37,9 +37,9 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity: class, 
     
     public async Task DeleteById(Guid id)
     {
-        var product = await Entities
+        var entity = await Entities
             .FirstAsync(p => p.Id == id);
-        _dbContext.Remove(product);
+        _dbContext.Remove(entity);
         await _dbContext.SaveChangesAsync();
     }
     

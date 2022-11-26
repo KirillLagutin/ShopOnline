@@ -1,6 +1,6 @@
 ﻿using ShopOnline.Models;
 
-namespace ShopOnline.WebApi.Services;
+namespace ShopOnline.Domain.Services;
 
 public interface IAccountService
 {

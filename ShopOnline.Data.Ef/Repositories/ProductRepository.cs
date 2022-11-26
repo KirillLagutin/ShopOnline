@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShopOnline.BlazorClient.Pages;
+using ShopOnline.Data.Ef.Data;
+using ShopOnline.Domain.IRepositories;
 using ShopOnline.Models;
-using ShopOnline.WebApi.Data;
-using ShopOnline.WebApi.Repositories.IRepositories;
 
-namespace ShopOnline.WebApi.Repositories;
+namespace ShopOnline.Data.Ef.Repositories;
 
 public class ProductRepository : IProductRepository
 {

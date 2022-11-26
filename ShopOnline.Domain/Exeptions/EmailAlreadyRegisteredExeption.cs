@@ -1,4 +1,4 @@
-﻿namespace ShopOnline.Models.Exeptions;
+﻿namespace ShopOnline.Domain.Exeptions;
 
 [Serializable]
 public class EmailAlreadyRegisteredExeption : Exception

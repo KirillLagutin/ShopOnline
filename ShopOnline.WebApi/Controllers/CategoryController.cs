@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopOnline.Domain.IGenericRepository;
 using ShopOnline.Models;
-using ShopOnline.WebApi.GenericRepository.IGenericRepository;
 
 namespace ShopOnline.WebApi.Controllers;
 

@@ -1,17 +1,29 @@
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ShopOnline.WebApi.Data;
-using ShopOnline.WebApi.GenericRepository;
-using ShopOnline.WebApi.GenericRepository.IGenericRepository;
-using ShopOnline.WebApi.Repositories;
-using ShopOnline.WebApi.Repositories.IRepositories;
-using ShopOnline.WebApi.Services;
+using ShopOnline.Data.Ef.Data;
+using ShopOnline.Data.Ef.GenericRepository;
+using ShopOnline.Data.Ef.Repositories;
+using ShopOnline.Domain.IGenericRepository;
+using ShopOnline.Domain.IRepositories;
+using ShopOnline.Domain.Services;
+using ShopOnline.Models.Dto;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var dbPath = builder.Configuration["DbPath"];
 
-
 // Add services to the container.
+
+// Logging
+builder.Services.AddHttpLogging(options => //настройка
+{
+    options.LoggingFields = HttpLoggingFields.RequestHeaders
+                            | HttpLoggingFields.ResponseHeaders
+                            | HttpLoggingFields.RequestBody
+                            | HttpLoggingFields.ResponseBody;
+});
+
 
 // Connection to db
 builder.Services.AddDbContext<AppDbContext>(options => 
@@ -24,17 +36,18 @@ builder.Services.AddCors();
 builder.Services.AddScoped(
     typeof(IRepository<>), typeof(EfRepository<>));
 
-// Registering ProductRepository
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
-// Registering AccountRepository
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-
-// Registering AccountService
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Add Controllers
 builder.Services.AddControllers();
+
+// PasswordHasher
+builder.Services.Configure<PasswordHasherOptions>(options => 
+    options.IterationCount = 100_000);
+builder.Services.AddSingleton
+    <IPasswordHasher<AccountDto>, PasswordHasher<AccountDto>>();
 
 // Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -42,6 +55,12 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
+
+app.MapGet("/hash", (string pwd, IPasswordHasher<AccountDto> hasher) =>
+{
+    string hashedPassword = hasher.HashPassword(new AccountDto(), pwd);
+    return hashedPassword;
+});
 
 // CORS
 app.UseCors(policy => policy
@@ -53,12 +72,28 @@ app.UseCors(policy => policy
     .AllowCredentials()
 );
 
+// app.Use(async (context, next) =>
+// {
+//     var userAgent = context.Request.Headers.UserAgent.ToString();
+//     if (userAgent.Contains("Edg"))
+//     {
+//         await next();
+//     }
+//     else
+//     {
+//         await context.Response.WriteAsync(
+//             "Браузер не поддерживается, используйте Edg");
+//     }
+// });
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHttpLogging();
 
 app.UseHttpsRedirection();
 

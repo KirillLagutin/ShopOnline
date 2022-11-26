@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopOnline.Models;
 
-namespace ShopOnline.WebApi.Data;
+namespace ShopOnline.Data.Ef.Data;
 
 public class AppDbContext : DbContext
 {

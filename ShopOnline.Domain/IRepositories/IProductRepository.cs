@@ -1,7 +1,6 @@
 ﻿using ShopOnline.Models;
-using ShopOnline.WebApi.GenericRepository.IGenericRepository;
 
-namespace ShopOnline.WebApi.Repositories.IRepositories;
+namespace ShopOnline.Domain.IRepositories;
 
 public interface IProductRepository
 {

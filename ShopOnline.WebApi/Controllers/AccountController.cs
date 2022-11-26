@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopOnline.Domain.Exeptions;
+using ShopOnline.Domain.IRepositories;
+using ShopOnline.Domain.Services;
 using ShopOnline.Models;
-using ShopOnline.WebApi.Repositories.IRepositories;
-using ShopOnline.WebApi.Services;
 
 namespace ShopOnline.WebApi.Controllers;
 
@@ -27,7 +28,7 @@ public class AccountController : ControllerBase
             var newAccount = await _accountService.Register(account);
             return newAccount;
         }
-        catch (Exception e)
+        catch (EmailAlreadyRegisteredExeption e)
         {
             return BadRequest(new
             {

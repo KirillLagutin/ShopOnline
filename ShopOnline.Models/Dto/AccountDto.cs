@@ -17,5 +17,4 @@ public class AccountDto
     [StringLength(32, MinimumLength = 6, 
         ErrorMessage = "От 6 до 32 символов, пожалуйста")]
     public string Password { get; set; }
-
 }

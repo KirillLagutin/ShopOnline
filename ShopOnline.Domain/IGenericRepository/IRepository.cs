@@ -1,6 +1,6 @@
 ﻿using ShopOnline.Models;
 
-namespace ShopOnline.WebApi.GenericRepository.IGenericRepository;
+namespace ShopOnline.Domain.IGenericRepository;
 
 public interface IRepository<TEntity> where TEntity: IEntity
 {

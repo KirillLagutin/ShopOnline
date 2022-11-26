@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShopOnline.WebApi.Data;
+using ShopOnline.Data.Ef.Data;
 
 #nullable disable
 
 namespace ShopOnline.WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221114233247_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20221116175138_AddingUniqEmail")]
+    partial class AddingUniqEmail
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,15 +27,23 @@ namespace ShopOnline.WebApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(24)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Accounts");
                 });

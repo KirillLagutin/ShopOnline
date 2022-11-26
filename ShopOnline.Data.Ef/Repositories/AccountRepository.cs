@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopOnline.Data.Ef.Data;
+using ShopOnline.Data.Ef.GenericRepository;
+using ShopOnline.Domain.IRepositories;
 using ShopOnline.Models;
-using ShopOnline.WebApi.Data;
-using ShopOnline.WebApi.GenericRepository;
-using ShopOnline.WebApi.Repositories.IRepositories;
 
-namespace ShopOnline.WebApi.Repositories;
+namespace ShopOnline.Data.Ef.Repositories;
 
 public class AccountRepository : EfRepository<Account>, IAccountRepository
 {
