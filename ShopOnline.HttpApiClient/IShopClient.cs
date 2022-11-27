@@ -16,4 +16,5 @@ public interface IShopClient
     Task DeleteCartItem(Guid id);
     Task ClearCart();
     Task RegisterAccount(AccountDto account);
+    Task Authorization(AccountDto account);
 }

@@ -3,6 +3,7 @@ using ShopOnline.Domain.Exeptions;
 using ShopOnline.Domain.IRepositories;
 using ShopOnline.Domain.Services;
 using ShopOnline.Models;
+using ShopOnline.Models.Dto;
 
 namespace ShopOnline.WebApi.Controllers;
 
@@ -28,12 +29,25 @@ public class AccountController : ControllerBase
             var newAccount = await _accountService.Register(account);
             return newAccount;
         }
-        catch (EmailAlreadyRegisteredExeption e)
+        catch (EmailAlreadyRegisteredExeption)
         {
             return BadRequest(new
             {
                 Message = "Такой Email уже зарегистрирован"
             });
+        }
+    }
+
+    [HttpGet("authorization")]
+    public async Task<ActionResult<Account>> Authorization(Account account)
+    {
+        try
+        {
+            return account;
+        }
+        catch (Exception)
+        {
+            return Unauthorized();
         }
     }
 

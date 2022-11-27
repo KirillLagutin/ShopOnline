@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ShopOnline.HttpApiClient\ShopOnline.HttpApiClient.csproj" />
     </ItemGroup>
 

@@ -136,4 +136,12 @@ public class ShopClient : IShopClient
 
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task Authorization(AccountDto account)
+    {
+        var uri = $"{_host}/account/authorization";
+        var response = await _httpClient.PostAsJsonAsync(uri, account);
+
+        response.EnsureSuccessStatusCode();
+    }
 }

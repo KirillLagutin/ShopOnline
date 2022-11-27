@@ -24,7 +24,6 @@ builder.Services.AddHttpLogging(options => //настройка
                             | HttpLoggingFields.ResponseBody;
 });
 
-
 // Connection to db
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseSqlite($"Data Source={dbPath}"));
@@ -55,12 +54,6 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-
-app.MapGet("/hash", (string pwd, IPasswordHasher<AccountDto> hasher) =>
-{
-    string hashedPassword = hasher.HashPassword(new AccountDto(), pwd);
-    return hashedPassword;
-});
 
 // CORS
 app.UseCors(policy => policy
@@ -94,6 +87,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpLogging();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
