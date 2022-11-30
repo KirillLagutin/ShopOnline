@@ -1,4 +1,6 @@
-﻿namespace ShopOnline.Models;
+﻿using ShopOnline.Domain.IGenericRepository;
+
+namespace ShopOnline.Domain.Entities;
 
 public class ProductCategory : IEntity
 {

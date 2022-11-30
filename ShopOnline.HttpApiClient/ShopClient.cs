@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
-using ShopOnline.Models;
-using ShopOnline.Models.Dto;
+using ShopOnline.Domain.Entities;
 
 namespace ShopOnline.HttpApiClient;
 
@@ -113,7 +112,7 @@ public class ShopClient : IShopClient
     {
         var uri = $"{_host}/cart/delete_cartitem";
         var response = await _httpClient
-            .DeleteAsync($"{uri}?id={id}");
+            .PostAsync($"{uri}?id={id}", null);
         
         response.EnsureSuccessStatusCode();
     }
@@ -123,13 +122,13 @@ public class ShopClient : IShopClient
 
         var uri = $"{_host}/cart/clear_cart";
         var response = await _httpClient
-            .DeleteAsync(uri);
+            .PostAsync(uri, null);
 
         response.EnsureSuccessStatusCode();
     }
     
 // ----------------------------  Account  -------------------------------
-    public async Task RegisterAccount(AccountDto account)
+    public async Task RegisterAccount(Account account)
     {
         var uri = $"{_host}/account/register";
         var response = await _httpClient.PostAsJsonAsync(uri, account);
@@ -137,11 +136,34 @@ public class ShopClient : IShopClient
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task Authorization(AccountDto account)
+    public async Task Authorization(Account account)
     {
         var uri = $"{_host}/account/authorization";
         var response = await _httpClient.PostAsJsonAsync(uri, account);
 
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task<Account?> GetAccount(Guid id)
+    {
+        var uri = $"{_host}/account/get_account";
+        var account = await _httpClient
+            .GetFromJsonAsync<Account>($"{uri}?id={id}");
+        
+        if (account is null)
+        {
+            throw new InvalidOperationException("Аккаунт не найден!");
+        }
+        
+        return account;
+    }
+    
+    public async Task DeleteAccount(Guid id)
+    {
+        var uri = $"{_host}/account/delete_account";
+        var response = await _httpClient
+            .PostAsync($"{uri}?id={id}", null);
+        
         response.EnsureSuccessStatusCode();
     }
 }

@@ -1,5 +1,4 @@
-using ShopOnline.Models;
-using ShopOnline.Models.Dto;
+using ShopOnline.Domain.Entities;
 
 namespace ShopOnline.HttpApiClient;
 
@@ -15,6 +14,8 @@ public interface IShopClient
     Task AddToCart(CartItem cartItem);
     Task DeleteCartItem(Guid id);
     Task ClearCart();
-    Task RegisterAccount(AccountDto account);
-    Task Authorization(AccountDto account);
+    Task RegisterAccount(Account account);
+    Task Authorization(Account account);
+    Task<Account?> GetAccount(Guid id);
+    Task DeleteAccount(Guid id);
 }

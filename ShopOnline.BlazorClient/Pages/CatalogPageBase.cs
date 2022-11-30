@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using ShopOnline.Domain.Entities;
 using ShopOnline.HttpApiClient;
-using ShopOnline.Models;
 
 namespace ShopOnline.BlazorClient.Pages;
 
@@ -37,11 +37,11 @@ public class CatalogBase : ComponentBase
 
     protected void NavigateToAddProduct()
     {
-        NavigationManager?.NavigateTo("/ProductAdding");
+        NavigationManager?.NavigateTo("ProductAdding");
     }
 
     protected void NavigateToDeleteProduct()
     {
-        NavigationManager?.NavigateTo("/ProductDeleting");
+        NavigationManager?.NavigateTo("ProductDeleting");
     }
 }

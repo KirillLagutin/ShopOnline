@@ -1,19 +1,17 @@
-﻿using System.Security.Authentication;
-using ShopOnline.Domain.Exeptions;
+﻿using ShopOnline.Domain.Exeptions;
 using ShopOnline.Domain.IRepositories;
-using ShopOnline.Models;
 using Microsoft.AspNetCore.Identity;
-using ShopOnline.Models.Dto;
+using ShopOnline.Domain.Entities;
 
 namespace ShopOnline.Domain.Services;
 
 public class AccountService : IAccountService
 {
     private readonly IAccountRepository _accountRepository;
-    private readonly IPasswordHasher<AccountDto> _hasher;
+    private readonly IPasswordHasher<Account> _hasher;
 
     public AccountService(IAccountRepository accountRepository,
-        IPasswordHasher<AccountDto> hasher)
+        IPasswordHasher<Account> hasher)
     {
         _accountRepository = accountRepository;
         _hasher = hasher;
@@ -21,7 +19,7 @@ public class AccountService : IAccountService
 
     public async Task<Account> Register(Account account)
     {
-        var passwordHash = _hasher.HashPassword(new AccountDto(), account.Password);
+        var passwordHash = _hasher.HashPassword(new Account(), account.Password);
         account.Password = passwordHash;
         
         var existedAccount = await _accountRepository
@@ -40,10 +38,10 @@ public class AccountService : IAccountService
     
     public async Task<Account> Authorization(Account account)
     {
-        var passwordHash = _hasher.HashPassword(new AccountDto(), account.Password);
+        var passwordHash = _hasher.HashPassword(new Account(), account.Password);
 
         PasswordVerificationResult result = _hasher.VerifyHashedPassword(
-            new AccountDto(), passwordHash, account.Password);
+            new Account(), passwordHash, account.Password);
         if (result != PasswordVerificationResult.Failed)
         {
             return account;
@@ -51,5 +49,4 @@ public class AccountService : IAccountService
 
         return null;
     }
-
 }

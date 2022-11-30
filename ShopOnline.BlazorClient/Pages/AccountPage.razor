@@ -1,0 +1,49 @@
+﻿@page "/Account/{Id:guid}"
+
+@using ShopOnline.Domain.Entities
+
+@inject IShopClient ShopClient
+@inject IToastService ToastService
+
+<h3>Личный кабинет</h3>
+
+<table>
+        <tr>
+            <td>Логин</td>
+            <td>
+                @Account?.Name
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                @Account?.Email
+            </td>
+        </tr>
+        <tr>
+            <button @onclick="DeleteAccount" class="btn btn-primary">
+                    <b>Удалить аккаунт</b>
+                </button>
+        </tr>
+    </table>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+    
+    private Account? Account { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Account = await ShopClient.GetAccount(Id);
+    }
+
+    private async Task DeleteAccount()
+    {
+        await ShopClient.DeleteAccount(Id);
+        
+        ToastService.ShowInfo(
+            $"{Account?.Name} удалён.");
+    }
+    
+}

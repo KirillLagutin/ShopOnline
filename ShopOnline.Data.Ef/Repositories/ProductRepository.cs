@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.Ef.Data;
+using ShopOnline.Domain.Entities;
 using ShopOnline.Domain.IRepositories;
-using ShopOnline.Models;
 
 namespace ShopOnline.Data.Ef.Repositories;
 

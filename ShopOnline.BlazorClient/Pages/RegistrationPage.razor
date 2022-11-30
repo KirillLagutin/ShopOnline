@@ -1,14 +1,17 @@
 ﻿@page "/Registration"
-@using ShopOnline.Models.Dto
+
+@using Microsoft.AspNetCore.Components
+@using ShopOnline.Domain.Entities
 
 @inject IShopClient ShopClient
 @inject IToastService ToastService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Регистрация</PageTitle>
 
 <h3>Регистрация</h3>
 
-<EditForm Model="_model" OnValidSubmit="Register">
+<EditForm Model="_model" OnValidSubmit="Register" href="/Account">
     <DataAnnotationsValidator/>
     <table>
         <tr>
@@ -32,19 +35,23 @@
             </td>
         </tr>
         <tr><td><ValidationSummary/></td></tr>
-        <tr><input type="submit" class="btn btn-primary" 
-                   value="Зарегистрироваться"/></tr>
+        <tr>
+            
+            <input type="submit" class="btn btn-primary"
+                   value="Зарегистрироваться"/>
+            <a class="link-primary" href="/Login">Авторизазия</a>
+        </tr>
     </table>
 </EditForm>
 
 @if (_register)
 {
     ToastService.ShowSuccess("Вы успешно зарегистрированы!");
+    NavigationManager.NavigateTo($"Account/{_model.Id}");
 }
 
 @code {
-
-    private readonly AccountDto _model = new();
+    private readonly Account _model = new();
     private bool _register = false;
 
     private async Task Register()
@@ -52,5 +59,4 @@
         await ShopClient.RegisterAccount(_model);
         _register = true;
     }
-
 }

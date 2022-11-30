@@ -1,4 +1,6 @@
-﻿@inject IToastService ToastService
+﻿@using ShopOnline.Domain.Entities
+
+@inject IToastService ToastService
 @inject IShopClient ShopClient
 
 <div class="col-md-4 mb-4">
@@ -33,9 +35,10 @@
         CartItems = await ShopClient.GetCartItems();
     }
     
-    private async Task AddProductToCart(Product? product)
+    private async Task AddProductToCart(Product product)
     {
-        await ShopClient.AddToCart(CartItems.First(ci=>ci.ProductId == product?.Id));
+        var cartItem = CartItems.First(ci => ci.ProductId == product.Id);
+        await ShopClient.AddToCart(cartItem);
         
         ToastService.ShowInfo(
             $"{product?.Name} в корзине");

@@ -1,4 +1,4 @@
-﻿namespace ShopOnline.Models;
+﻿namespace ShopOnline.Domain.IGenericRepository;
 
 public interface IEntity
 {

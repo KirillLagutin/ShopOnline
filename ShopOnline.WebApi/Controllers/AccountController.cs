@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopOnline.Domain.Entities;
 using ShopOnline.Domain.Exeptions;
 using ShopOnline.Domain.IRepositories;
 using ShopOnline.Domain.Services;
-using ShopOnline.Models;
-using ShopOnline.Models.Dto;
 
 namespace ShopOnline.WebApi.Controllers;
 
@@ -38,7 +37,7 @@ public class AccountController : ControllerBase
         }
     }
 
-    [HttpGet("authorization")]
+    [HttpPost("authorization")]
     public async Task<ActionResult<Account>> Authorization(Account account)
     {
         try

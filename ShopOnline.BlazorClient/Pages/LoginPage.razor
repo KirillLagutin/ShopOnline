@@ -1,5 +1,7 @@
 ﻿@page "/Login"
-@using ShopOnline.Models.Dto
+
+@using Microsoft.AspNetCore.Components
+@using ShopOnline.Domain.Entities
 
 @inject IShopClient ShopClient
 @inject IToastService ToastService
@@ -39,7 +41,7 @@
 
 @code {
 
-    private readonly AccountDto _model = new();
+    private readonly Account _model = new();
     private bool _authorizen = false;
 
     private async Task Authorized()

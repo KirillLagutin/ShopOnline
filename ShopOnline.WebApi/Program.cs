@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.Ef.Data;
 using ShopOnline.Data.Ef.GenericRepository;
 using ShopOnline.Data.Ef.Repositories;
+using ShopOnline.Domain.Entities;
 using ShopOnline.Domain.IGenericRepository;
 using ShopOnline.Domain.IRepositories;
 using ShopOnline.Domain.Services;
-using ShopOnline.Models.Dto;
+using ShopOnline.Models.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,7 @@ var dbPath = builder.Configuration["DbPath"];
 // Logging
 builder.Services.AddHttpLogging(options => //настройка
 {
-    options.LoggingFields = HttpLoggingFields.RequestHeaders
-                            | HttpLoggingFields.ResponseHeaders
-                            | HttpLoggingFields.RequestBody
+    options.LoggingFields = HttpLoggingFields.RequestBody
                             | HttpLoggingFields.ResponseBody;
 });
 
@@ -46,7 +45,7 @@ builder.Services.AddControllers();
 builder.Services.Configure<PasswordHasherOptions>(options => 
     options.IterationCount = 100_000);
 builder.Services.AddSingleton
-    <IPasswordHasher<AccountDto>, PasswordHasher<AccountDto>>();
+    <IPasswordHasher<Account>, PasswordHasher<Account>>();
 
 // Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -86,12 +85,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
+
 app.UseHttpLogging();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
+// app.Use(async (context, next) =>
+// {
+//     var transitionsPage = context.Request.Path;
+//     
+//     await next();
+// });
 
 app.MapControllers();
 

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopOnline.Models.Dto;
+namespace ShopOnline.Models.Requests;
 
-public class AccountDto
+public class RegisterRequest
 {
     [Required(ErrorMessage = "Обязательное поле")]
     [StringLength(24, MinimumLength = 3, 

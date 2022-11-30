@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ShopOnline.Domain.IGenericRepository;
 
-namespace ShopOnline.Models;
+namespace ShopOnline.Domain.Entities;
 
 public class Product : IEntity
 {
