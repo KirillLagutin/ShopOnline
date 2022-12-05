@@ -1,4 +1,4 @@
-﻿namespace ShopOnline.Models.Responses;
+﻿namespace ShopOnline.HttpModels.Responses;
 
 public class LoginResponse
 {

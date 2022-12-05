@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopOnline.Models.Requests;
+namespace ShopOnline.HttpModels.Requests;
 
 public class LoginRequest
 {

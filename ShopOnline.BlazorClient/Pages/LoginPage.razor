@@ -1,10 +1,10 @@
 ﻿@page "/Login"
 
 @using Microsoft.AspNetCore.Components
-@using ShopOnline.Domain.Entities
-@using ShopOnline.Models.Requests
+@using ShopOnline.HttpModels.Requests
+@using Blazored.LocalStorage
 
-
+@inject ILocalStorageService LocalStorage;
 @inject IShopClient ShopClient
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
@@ -40,25 +40,18 @@
 @if (_authorizen)
 {
     ToastService.ShowSuccess("Вы успешно авторизованы!");
-    //NavigationManager.NavigateTo($"Account/{GetId()}");
+    NavigationManager.NavigateTo("Account");
 }
 
 @code {
-
-    public Task<Guid> Id { get; set; }
+    
     private readonly LoginRequest _model = new();
     private bool _authorizen = false;
 
     private async Task LogIn()
     {
-        await ShopClient.LogInAccount(_model);
+        var response = await ShopClient.LogInAccount(_model);
         _authorizen = true;
-        
+        await LocalStorage.SetItemAsync("token", response.Token);
     }
-
-    // private async Task<Guid> GetId()
-    // {
-    //     Id = ShopClient.GetIdByEmail(_model.Email);
-    //     return Id.Result;
-    // }
 }

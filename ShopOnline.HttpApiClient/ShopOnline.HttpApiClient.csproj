@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ShopOnline.Domain\ShopOnline.Domain.csproj" />
-      <ProjectReference Include="..\ShopOnline.Models\ShopOnline.Models.csproj" />
+      <ProjectReference Include="..\ShopOnline.HttpModels\ShopOnline.HttpModels.csproj" />
     </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.BlazorClient", "ShopOnline.BlazorClient\ShopOnline.BlazorClient.csproj", "{1E03E32C-B772-40FE-80D9-0E25721829FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.Models", "ShopOnline.Models\ShopOnline.Models.csproj", "{86C20D89-AACB-4186-BE01-589CAF75ABFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.HttpModels", "ShopOnline.HttpModels\ShopOnline.HttpModels.csproj", "{86C20D89-AACB-4186-BE01-589CAF75ABFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.WebApi", "ShopOnline.WebApi\ShopOnline.WebApi.csproj", "{3EABC492-96B9-42D2-84AF-C5665B41CBE8}"
 EndProject

@@ -24,8 +24,4 @@
       <ProjectReference Include="..\ShopOnline.Domain\ShopOnline.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Services" />
-    </ItemGroup>
-
 </Project>

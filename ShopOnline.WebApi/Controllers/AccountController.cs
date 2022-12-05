@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Domain.Entities;
 using ShopOnline.Domain.Exceptions;
 using ShopOnline.Domain.IRepositories;
 using ShopOnline.Domain.Services;
-using ShopOnline.Models.Requests;
-using ShopOnline.Models.Responses;
+using ShopOnline.HttpModels.Requests;
+using ShopOnline.HttpModels.Responses;
 
 namespace ShopOnline.WebApi.Controllers;
 
@@ -49,9 +50,6 @@ public class AccountController : ControllerBase
             var (account, token)
                 = await _accountService.LogIn(request.Email, request.Password);
 
-            // var strId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            // var userId = Guid.Parse(strId);
-            
             var response = new LoginResponse
             {
                 Id = account.Id,
@@ -69,37 +67,25 @@ public class AccountController : ControllerBase
                 Message = "Такой Email не зарегистрирован"
             });
         }
-
-        // Реализовать возвращаемый тип из Login (LoginResponse)
-        // LoginResponse: Id аккаунта, Name, Email, Token
-        // Обработать эксепшены по аналогии с методом Register
-    }
-
-    [HttpGet("get_account")]
-    public async Task<ActionResult<Account>> GetAccount(Guid id)
-    {
-        try
-        {
-            var account = await _accountRepository.GetById(id);
-            return Ok(account);
-        }
-        catch (InvalidOperationException)
-        {
-            return NotFound();
-        }
-    }
-    [HttpGet("get_id")]
-    public async Task<ActionResult<Guid>> GetIdByEmail(string email)
-    {
-        try
-        {
-            var id = await _accountRepository.GetIdByEmail(email);
-            return Ok(id);
-        }
         catch (Exception)
         {
-            return NotFound();
+            return BadRequest(
+            new
+            {
+                Message = "Пароль не совпадает"
+            });
         }
+    }
+
+    [Authorize]
+    [HttpGet("get_account")]
+    public async Task<ActionResult<AccountInfoResponse>> GetCurrentAccount()
+    {
+        var strId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var guid = Guid.Parse(strId);
+        var account = await _accountRepository.GetById(guid);
+
+        return new AccountInfoResponse(guid, account.Name, account.Email);
     }
 
     [HttpPost("delete_account")]

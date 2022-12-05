@@ -1,6 +1,6 @@
 using ShopOnline.Domain.Entities;
-using ShopOnline.Models.Requests;
-using ShopOnline.Models.Responses;
+using ShopOnline.HttpModels.Requests;
+using ShopOnline.HttpModels.Responses;
 
 namespace ShopOnline.HttpApiClient;
 
@@ -16,9 +16,9 @@ public interface IShopClient
     Task AddToCart(CartItem cartItem);
     Task DeleteCartItem(Guid id);
     Task ClearCart();
-    Task RegisterAccount(RegisterRequest request);
-    Task LogInAccount(LoginRequest account);
-    Task<Account?> GetAccountById(Guid id);
+    Task<RegisterResponse> RegisterAccount(RegisterRequest request);
+    Task<LoginResponse> LogInAccount(LoginRequest account);
+    Task<AccountInfoResponse> GetCurrentAccount();
     Task<Guid> GetIdByEmail(string email);
     Task DeleteAccount(Guid id);
 }

@@ -1,6 +1,6 @@
-﻿@page "/Account/{Id:guid}"
+﻿@page "/Account"
 
-@using ShopOnline.Domain.Entities
+@using ShopOnline.HttpModels.Responses
 
 @inject IShopClient ShopClient
 @inject IToastService ToastService
@@ -9,41 +9,39 @@
 
 <table>
         <tr>
-            <td>Логин</td>
+            <td>Логин: </td>
             <td>
                 @Account?.Name
             </td>
         </tr>
         <tr>
-            <td>Email</td>
+            <td>Email:</td>
             <td>
                 @Account?.Email
             </td>
         </tr>
-        <tr>
-            <button @onclick="DeleteAccount" class="btn btn-primary">
-                    <b>Удалить аккаунт</b>
-                </button>
-        </tr>
+        @* <tr> *@
+        @*     <button @onclick="DeleteAccount" class="btn btn-primary"> *@
+        @*             <b>Удалить аккаунт</b> *@
+        @*         </button> *@
+        @* </tr> *@
     </table>
 
 @code {
-    [Parameter]
-    public Guid Id { get; set; }
-    
-    private Account? Account { get; set; }
+
+    private AccountInfoResponse? Account { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Account = await ShopClient.GetAccountById(Id);
+        Account = await ShopClient.GetCurrentAccount();
     }
 
-    private async Task DeleteAccount()
-    {
-        await ShopClient.DeleteAccount(Id);
-        
-        ToastService.ShowInfo(
-            $"Аккаунт {Account?.Name} удалён.");
-    }
+    // private async Task DeleteAccount()
+    // {
+    //     await ShopClient.DeleteAccount(Id);
+    //     
+    //     ToastService.ShowInfo(
+    //         $"Аккаунт {Account?.Name} удалён.");
+    // }
     
 }

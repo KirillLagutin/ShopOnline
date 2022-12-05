@@ -1,28 +1,17 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using ShopOnline.Domain.Entities;
+using ShopOnline.Domain.Services;
+using ShopOnline.WebApi.Configurations;
 
-namespace ShopOnline.Domain.Services;
+namespace ShopOnline.WebApi.Services;
 
-public class JwtConfig
+public class JwtTokenService : ITokenService
 {
-    public string SigningKey { get; set; } = "";
-    public TimeSpan LifeTime { get; set; }
-    public string Audience { get; set; } = "";
-    public string Issuer { get; set; } = "";
-
-    public byte[] SigningKeyBytes => Encoding.UTF8.GetBytes(SigningKey);
-}
-
-public class TokenService : ITokenService
-{
-    
-    
     private readonly JwtConfig _jwtConfig;
 
-    public TokenService(JwtConfig jwtConfig)
+    public JwtTokenService(JwtConfig jwtConfig)
     {
         _jwtConfig = jwtConfig;
     }

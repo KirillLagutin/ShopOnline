@@ -20,7 +20,7 @@ namespace ShopOnline.WebApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
 
-            modelBuilder.Entity("ShopOnline.Models.Account", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.Account", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace ShopOnline.WebApi.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("ShopOnline.Models.Cart", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.Cart", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace ShopOnline.WebApi.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("ShopOnline.Models.CartItem", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.CartItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,7 @@ namespace ShopOnline.WebApi.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("ShopOnline.Models.Product", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,7 +111,7 @@ namespace ShopOnline.WebApi.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ShopOnline.Models.ProductCategory", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.ProductCategory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,9 +128,9 @@ namespace ShopOnline.WebApi.Migrations
                     b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("ShopOnline.Models.Cart", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.Cart", b =>
                 {
-                    b.HasOne("ShopOnline.Models.Account", "Account")
+                    b.HasOne("ShopOnline.HttpModels.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -139,15 +139,15 @@ namespace ShopOnline.WebApi.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("ShopOnline.Models.CartItem", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.CartItem", b =>
                 {
-                    b.HasOne("ShopOnline.Models.Cart", "Cart")
+                    b.HasOne("ShopOnline.HttpModels.Cart", "Cart")
                         .WithMany()
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShopOnline.Models.Product", "Product")
+                    b.HasOne("ShopOnline.HttpModels.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -158,9 +158,9 @@ namespace ShopOnline.WebApi.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ShopOnline.Models.Product", b =>
+            modelBuilder.Entity("ShopOnline.HttpModels.Product", b =>
                 {
-                    b.HasOne("ShopOnline.Models.ProductCategory", "ProductCategory")
+                    b.HasOne("ShopOnline.HttpModels.ProductCategory", "ProductCategory")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -2,7 +2,7 @@
 
 namespace ShopOnline.WebApi.Configurations;
 
-public class JwtConfig_ // временно перенёс в TokenServise
+public class JwtConfig
 {
     public string SigningKey { get; set; } = "";
     public TimeSpan LifeTime { get; set; }

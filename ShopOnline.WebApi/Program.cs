@@ -12,6 +12,7 @@ using ShopOnline.Domain.IGenericRepository;
 using ShopOnline.Domain.IRepositories;
 using ShopOnline.Domain.Services;
 using ShopOnline.WebApi.Configurations;
+using ShopOnline.WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,7 @@ builder.Services.AddScoped(
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
 // Add Controllers
 builder.Services.AddControllers();
@@ -51,7 +52,7 @@ builder.Services.Configure<PasswordHasherOptions>(options =>
 builder.Services.AddSingleton
     <IPasswordHasher<Account>, PasswordHasher<Account>>();
 
-// Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {

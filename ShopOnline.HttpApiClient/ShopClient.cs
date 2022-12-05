@@ -1,7 +1,8 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using ShopOnline.Domain.Entities;
-using ShopOnline.Models.Requests;
-using ShopOnline.Models.Responses;
+using ShopOnline.HttpModels.Requests;
+using ShopOnline.HttpModels.Responses;
 
 namespace ShopOnline.HttpApiClient;
 
@@ -21,6 +22,14 @@ public class ShopClient : IShopClient
         _httpClient = httpClient ?? new HttpClient();
     }
 
+    public void SetAuthorizationToken(string token)
+    {
+        if (token == null) throw new ArgumentNullException(nameof(token));
+        var header = new AuthenticationHeaderValue("Bearer", token);
+        _httpClient.DefaultRequestHeaders.Authorization = header;
+        //IsAuthorizationTokenSet = true;
+    }
+    
 // -------------------------  Products  ----------------------------
     public async Task<IReadOnlyList<Product>?> GetProducts()
     {
@@ -130,34 +139,39 @@ public class ShopClient : IShopClient
     }
     
 // ----------------------------  Account  -------------------------------
-    public async Task RegisterAccount(RegisterRequest request)
+    public async Task<RegisterResponse> RegisterAccount(RegisterRequest request)
     {
         var uri = $"{_host}/account/register";
         var response = await _httpClient.PostAsJsonAsync(uri, request);
 
         response.EnsureSuccessStatusCode();
+        
+        var registerResponse = await response.Content.ReadFromJsonAsync<RegisterResponse>();
+
+        return registerResponse!;
     }
 
-    public async Task LogInAccount(LoginRequest account)
+    public async Task<LoginResponse> LogInAccount(LoginRequest account)
     {
         var uri = $"{_host}/account/login";
         var response = await _httpClient.PostAsJsonAsync(uri, account);
 
         response.EnsureSuccessStatusCode();
+        
+        var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
+        
+        SetAuthorizationToken(loginResponse!.Token);
+        
+        return loginResponse!;
     }
     
-    public async Task<Account?> GetAccountById(Guid id)
+    public async Task<AccountInfoResponse> GetCurrentAccount()
     {
         var uri = $"{_host}/account/get_account";
-        var account = await _httpClient
-            .GetFromJsonAsync<Account>($"{uri}?id={id}");
-        
-        if (account is null)
-        {
-            throw new InvalidOperationException("Аккаунт не найден!");
-        }
-        
-        return account;
+        var response = await _httpClient
+            .GetFromJsonAsync<AccountInfoResponse>(uri);
+
+        return response!;
     }
     
     public async Task<Guid> GetIdByEmail(string email)

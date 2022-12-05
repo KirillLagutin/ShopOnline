@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopOnline.Models.Requests;
+namespace ShopOnline.HttpModels.Requests;
 
 public class RegisterRequest
 {
@@ -15,6 +15,6 @@ public class RegisterRequest
     
     [Required(ErrorMessage = "Обязательное поле")]
     [StringLength(32, MinimumLength = 8, 
-        ErrorMessage = "От 6 до 32 символов, пожалуйста")]
+        ErrorMessage = "От 8 до 32 символов, пожалуйста")]
     public string Password { get; set; }
 }
