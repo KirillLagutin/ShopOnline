@@ -1,24 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+      <UserSecretsId>06bf1bb9-f146-4e95-a831-71bb16e1aa42</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ShopOnline.BlazorClient\ShopOnline.BlazorClient.csproj" />
       <ProjectReference Include="..\ShopOnline.Data.Ef\ShopOnline.Data.Ef.csproj" />
       <ProjectReference Include="..\ShopOnline.Domain\ShopOnline.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>

@@ -2,15 +2,18 @@
 
 @using Microsoft.AspNetCore.Components
 @using ShopOnline.Domain.Entities
+@using ShopOnline.Models.Requests
+
 
 @inject IShopClient ShopClient
 @inject IToastService ToastService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Личный кабинет</PageTitle>
 
 <h3>Личный кабинет</h3>
 
-<EditForm Model="_model" OnValidSubmit="Authorized">
+<EditForm Model="_model" OnValidSubmit="LogIn">
     <table>
         <tr>
             <td>Email</td>
@@ -37,16 +40,25 @@
 @if (_authorizen)
 {
     ToastService.ShowSuccess("Вы успешно авторизованы!");
+    //NavigationManager.NavigateTo($"Account/{GetId()}");
 }
 
 @code {
 
-    private readonly Account _model = new();
+    public Task<Guid> Id { get; set; }
+    private readonly LoginRequest _model = new();
     private bool _authorizen = false;
 
-    private async Task Authorized()
+    private async Task LogIn()
     {
-        await ShopClient.Authorization(_model);
+        await ShopClient.LogInAccount(_model);
         _authorizen = true;
+        
     }
+
+    // private async Task<Guid> GetId()
+    // {
+    //     Id = ShopClient.GetIdByEmail(_model.Email);
+    //     return Id.Result;
+    // }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Json;
 using ShopOnline.Domain.Entities;
+using ShopOnline.Models.Requests;
+using ShopOnline.Models.Responses;
 
 namespace ShopOnline.HttpApiClient;
 
@@ -128,23 +130,23 @@ public class ShopClient : IShopClient
     }
     
 // ----------------------------  Account  -------------------------------
-    public async Task RegisterAccount(Account account)
+    public async Task RegisterAccount(RegisterRequest request)
     {
         var uri = $"{_host}/account/register";
-        var response = await _httpClient.PostAsJsonAsync(uri, account);
+        var response = await _httpClient.PostAsJsonAsync(uri, request);
 
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task Authorization(Account account)
+    public async Task LogInAccount(LoginRequest account)
     {
-        var uri = $"{_host}/account/authorization";
+        var uri = $"{_host}/account/login";
         var response = await _httpClient.PostAsJsonAsync(uri, account);
 
         response.EnsureSuccessStatusCode();
     }
     
-    public async Task<Account?> GetAccount(Guid id)
+    public async Task<Account?> GetAccountById(Guid id)
     {
         var uri = $"{_host}/account/get_account";
         var account = await _httpClient
@@ -156,6 +158,15 @@ public class ShopClient : IShopClient
         }
         
         return account;
+    }
+    
+    public async Task<Guid> GetIdByEmail(string email)
+    {
+        var uri = $"{_host}/account/get_id";
+        var id = await _httpClient
+            .GetFromJsonAsync<Guid>($"{uri}?email={email}");
+
+        return id;
     }
     
     public async Task DeleteAccount(Guid id)

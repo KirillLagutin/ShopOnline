@@ -1,7 +1,7 @@
-﻿using ShopOnline.Domain.Exeptions;
-using ShopOnline.Domain.IRepositories;
+﻿using ShopOnline.Domain.IRepositories;
 using Microsoft.AspNetCore.Identity;
 using ShopOnline.Domain.Entities;
+using ShopOnline.Domain.Exceptions;
 
 namespace ShopOnline.Domain.Services;
 
@@ -9,12 +9,20 @@ public class AccountService : IAccountService
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IPasswordHasher<Account> _hasher;
+    private readonly ITokenService _tokenService;
 
-    public AccountService(IAccountRepository accountRepository,
-        IPasswordHasher<Account> hasher)
+    public AccountService(
+        IAccountRepository accountRepository,
+        IPasswordHasher<Account> hasher,
+        ITokenService tokenService)
     {
-        _accountRepository = accountRepository;
-        _hasher = hasher;
+        // Fail Fast
+        _accountRepository = accountRepository 
+                             ?? throw new ArgumentNullException(nameof(accountRepository));
+        _hasher            = hasher 
+                             ?? throw new ArgumentNullException(nameof(hasher));
+        _tokenService      = tokenService 
+                             ?? throw new ArgumentNullException(nameof(tokenService));
     }
 
     public async Task<Account> Register(Account account)
@@ -36,17 +44,27 @@ public class AccountService : IAccountService
         return account;
     }
     
-    public async Task<Account> Authorization(Account account)
+    public async Task<(Account account, string token)> LogIn(string email, string password)
     {
-        var passwordHash = _hasher.HashPassword(new Account(), account.Password);
+        if (email == null) throw new ArgumentNullException(nameof(email));
+        if (password == null) throw new ArgumentNullException(nameof(password));
 
-        PasswordVerificationResult result = _hasher.VerifyHashedPassword(
-            new Account(), passwordHash, account.Password);
-        if (result != PasswordVerificationResult.Failed)
+        Account? account = await _accountRepository.FindByEmail(email);
+        if (account is null)
         {
-            return account;
+            throw new EmailUnregisteredExceptions();
         }
 
-        return null;
+        var result = _hasher.VerifyHashedPassword(account,
+            account.Password, password);
+        if (result is PasswordVerificationResult.Failed)
+        {
+            throw new IncorrectPasswordException();
+        }
+
+        string token = _tokenService.GenerateToken(account);
+        // реализовать _tokenService
+
+        return (account, token);
     }
 }

@@ -24,6 +24,13 @@ public class AccountRepository : EfRepository<Account>, IAccountRepository
         return account;
     }
 
+    public async Task<Guid> GetIdByEmail(string email)
+    {
+        var account = await FindByEmail(email);
+        
+        return account.Id;
+    }
+
     public async Task DeleteAccount(Guid id)
     {
         var account = await _dbContext.Accounts

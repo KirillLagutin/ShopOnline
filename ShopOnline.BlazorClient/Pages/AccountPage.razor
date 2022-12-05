@@ -35,7 +35,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Account = await ShopClient.GetAccount(Id);
+        Account = await ShopClient.GetAccountById(Id);
     }
 
     private async Task DeleteAccount()
@@ -43,7 +43,7 @@
         await ShopClient.DeleteAccount(Id);
         
         ToastService.ShowInfo(
-            $"{Account?.Name} удалён.");
+            $"Аккаунт {Account?.Name} удалён.");
     }
     
 }

@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using ShopOnline.Domain.Entities;
-using ShopOnline.Domain.Exeptions;
+using ShopOnline.Domain.Exceptions;
 using ShopOnline.Domain.IRepositories;
 using ShopOnline.Domain.Services;
+using ShopOnline.Models.Requests;
+using ShopOnline.Models.Responses;
 
 namespace ShopOnline.WebApi.Controllers;
 
@@ -26,6 +29,7 @@ public class AccountController : ControllerBase
         try
         {
             var newAccount = await _accountService.Register(account);
+            
             return newAccount;
         }
         catch (EmailAlreadyRegisteredExeption)
@@ -37,17 +41,38 @@ public class AccountController : ControllerBase
         }
     }
 
-    [HttpPost("authorization")]
-    public async Task<ActionResult<Account>> Authorization(Account account)
+    [HttpPost("login")]
+    public async Task<ActionResult<LoginResponse>> LogIn(LoginRequest request)
     {
         try
         {
-            return account;
+            var (account, token)
+                = await _accountService.LogIn(request.Email, request.Password);
+
+            // var strId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // var userId = Guid.Parse(strId);
+            
+            var response = new LoginResponse
+            {
+                Id = account.Id,
+                Name = account.Name,
+                Email = request.Email,
+                Token = token
+            };
+
+            return response;
         }
-        catch (Exception)
+        catch (EmailUnregisteredExceptions)
         {
-            return Unauthorized();
+            return BadRequest(new
+            {
+                Message = "Такой Email не зарегистрирован"
+            });
         }
+
+        // Реализовать возвращаемый тип из Login (LoginResponse)
+        // LoginResponse: Id аккаунта, Name, Email, Token
+        // Обработать эксепшены по аналогии с методом Register
     }
 
     [HttpGet("get_account")]
@@ -63,11 +88,31 @@ public class AccountController : ControllerBase
             return NotFound();
         }
     }
+    [HttpGet("get_id")]
+    public async Task<ActionResult<Guid>> GetIdByEmail(string email)
+    {
+        try
+        {
+            var id = await _accountRepository.GetIdByEmail(email);
+            return Ok(id);
+        }
+        catch (Exception)
+        {
+            return NotFound();
+        }
+    }
 
     [HttpPost("delete_account")]
     public async Task<IActionResult> DeleteAccount(Guid id)
     {
-        await _accountRepository.DeleteById(id);
-        return Ok();
+        try
+        {
+            await _accountRepository.DeleteById(id);
+            return Ok();
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound();
+        }
     }
 }

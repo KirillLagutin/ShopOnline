@@ -1,7 +1,7 @@
 ﻿@page "/Registration"
 
 @using Microsoft.AspNetCore.Components
-@using ShopOnline.Domain.Entities
+@using ShopOnline.Models.Requests
 
 @inject IShopClient ShopClient
 @inject IToastService ToastService
@@ -47,11 +47,11 @@
 @if (_register)
 {
     ToastService.ShowSuccess("Вы успешно зарегистрированы!");
-    NavigationManager.NavigateTo($"Account/{_model.Id}");
+    //NavigationManager.NavigateTo($"Account/{_model.Id}");
 }
 
 @code {
-    private readonly Account _model = new();
+    private readonly RegisterRequest _model = new();
     private bool _register = false;
 
     private async Task Register()

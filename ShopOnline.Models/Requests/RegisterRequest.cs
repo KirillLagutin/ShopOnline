@@ -14,7 +14,7 @@ public class RegisterRequest
     public string Email { get; set; }
     
     [Required(ErrorMessage = "Обязательное поле")]
-    [StringLength(32, MinimumLength = 6, 
+    [StringLength(32, MinimumLength = 8, 
         ErrorMessage = "От 6 до 32 символов, пожалуйста")]
     public string Password { get; set; }
 }
